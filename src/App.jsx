@@ -1,37 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import OpenAI from "openai";
+import { useState } from "react";
 import './App.css'
-import Button from './Button'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+
+const [message, setMessage] = useState("")
+const [resp,setResp] = useState("")
+
+const handleMessage = (e) => {
+  setMessage(e.target.value)
+}
+
+const client = new OpenAI({
+  apiKey: "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",
+  dangerouslyAllowBrowser: true
+});
+
+const getMessage = (message) =>{
+    console.log("avvio messaggio...")
+    console.log(message)
+try{
+    const response =  client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+        {role: "user", content: message}
+    ]
+});
+
+console.log(response);
+//setResp(response.choices[0].message.content)
+
+}catch(err){
+    console.log("THIS IS ERROR",err)
+}
+
+}
+
 
   return (
     <>
+      <input id="text" type="text" placeholder="ask something..." onChange={handleMessage}/>
+      <button
+        id="send"
+        onClick={() => {
+          console.log("click!");
+          getMessage(message);
+        }}
+      >
+        send
+      </button>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {resp}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <Button />
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
 export default App
