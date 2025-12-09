@@ -1,0 +1,22 @@
+services:
+  app-dev:
+    # Usiamo lo stesso Dockerfile, ma ci fermiamo allo stadio "builder" (dove c'è Node)
+    # invece di andare fino in fondo a Caddy.
+    build:
+      context: .
+      target: builder
+    
+    # Mappiamo la porta 5173 (standard di Vite)
+    ports:
+      - "5173:5173"
+
+    # I Volumi sono la "magia" del Live Reload:
+    volumes:
+      # 1. Collega la cartella del tuo computer dentro al container
+      - .:/app
+      # 2. IMPORTANTE: Evita che la cartella node_modules del tuo PC sovrascriva quella del container
+      - /app/node_modules
+
+    # Questo comando avvia il server di sviluppo invece di fare la build
+    # --host serve per rendere il sito accessibile fuori dal container
+    command: npm run dev -- --host
