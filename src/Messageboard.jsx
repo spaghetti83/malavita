@@ -4,7 +4,7 @@ import chen from '../server/data/characters/Chen.json'
 import './App.css'
 
 
-function Messageboard() {
+const Messageboard = () =>   {
 /*
 const [chen] = useState(
     {
@@ -112,13 +112,52 @@ const [chen] = useState(
 )
 */
 
-
 const gptKey = import.meta.env.VITE_GPT_MINI_KEY;
 const [message, setMessage] = useState("")
 const [chatLog,setChatLog] = useState("")
 const [chatHistory,setChatHistory] = useState([])
 const handleMessage = (e) => {
   setMessage(e.target.value)
+}
+const messagePressureDetection =  async (question) =>{
+
+    try{
+        const response = await fetch('http://localhost:5000/getKeywords',{
+            method : "GET",
+            headers: { 'Content-Type' : 'applications/json'}
+        })
+        const data = await response.json()
+        console.log("DATA",data.message[0])
+        for (let e = 0; e < data.message; e++) {
+            let isTriggered = data.message[e].words.some( word => question.includes(word))
+            console.log(isTriggered)
+            if(isTriggered){
+                addPressure()
+            }
+        }
+        
+        //console.log("words: ",words)
+
+        return data
+    }catch(err){
+        console.log(err)
+    }
+    
+    
+}
+
+const addPressure = async () => {
+    try{
+        const response = await fetch('http://localhost:5000/pressure',{
+            method : "GET",
+            headers: { 'Content-Type' : 'applications/json'}
+        })
+        const data = await response.json()
+        console.log(data)
+        getMessage()
+}catch(error){
+    console.log(error)
+}
 }
 
 const client = new OpenAI({
@@ -153,8 +192,9 @@ try{
 }
 
 useEffect(()=>{
+    //CHAT HISTORY UPDATE
     chatHistory.map(e => console.log("History: ",e.content))
-    ///console.log(chatHistory)
+    
     
 },[chatHistory])
 
@@ -165,7 +205,8 @@ useEffect(()=>{
       <button
         id="send"
         onClick={() => {
-          getMessage(message);
+          //getMessage(message);
+          messagePressureDetection(message)
         }}
       >
         send

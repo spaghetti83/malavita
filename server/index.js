@@ -1,56 +1,64 @@
-require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Character = require('./models/Character');
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
-
+const { MONGODB_USR, MONGODB_PSW } = process.env;
+console.log(MONGODB_USR,MONGODB_PSW)
 // Middleware
-app.use(cors()); // Permette a React (localhost:5173) di parlare con Node (localhost:5000)
-app.use(express.json()); // Permette di leggere i body JSON delle richieste
+app.use(cors()); 
+app.use(express.json()); 
 
-// Connessione al DB (MongoDB Atlas o locale)
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/rpg_game')
-  .then(() => console.log('✅ MongoDB Connesso'))
-  .catch(err => console.error('❌ Errore DB:', err));
+// MONGODB connection
+const mongoURI = `mongodb+srv://${MONGODB_USR}:${MONGODB_PSW}@cluster0.fxumk9v.mongodb.net/malavita`
+
+mongoose.connect(mongoURI)
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch(err => console.error('❌ Error DB:', err));
 
 // --- ROTTE API ---
 
 // 1. GET: Scarica tutti i personaggi per la tua lista
-app.get('/api/characters', async (req, res) => {
-  try {
-    const chars = await Character.find();
-    res.json(chars);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.get('/pressure', async (req, res) => {
+    try{
+        const char = await Character.findOne({'meta.id' : 'char_chen_101'})
+        if(!char){
+            console.log("no character found!")
+            return res.status(404).send("Personaggio non trovato nel database!");
+        }
+        let pressureLevel = char.state_metrics.pressure_level
+        let newPressure = pressureLevel + 5
+        char.state_metrics.pressure_level = newPressure
+        await char.save()
+        res.send({message: newPressure})
+    }catch(error){
+        console.error(error);
+        res.status(500).send('Errore: ' + error.message);
+    }
+    
+});
+app.get('/getKeywords', async (req, res) => {
+    try{
+        const char = await Character.findOne({'meta.id' : 'char_chen_101'})
+        if(!char){
+            console.log("no character found!")
+            return res.status(404).send("Personaggio non trovato nel database!");
+        }
+        const keywords = char.interaction_triggers.keywords
+        console.log("keywords", keywords)
+        res.send({message: keywords})
+    }catch(error){
+        console.error(error);
+        res.status(500).send('Errore: ' + error.message);
+    }
+    
 });
 
-// 2. POST: Importa/Crea un nuovo personaggio (quello dal tuo JSON!)
-app.post('/api/characters', async (req, res) => {
-  try {
-    const newChar = new Character(req.body);
-    const savedChar = await newChar.save();
-    res.status(201).json(savedChar);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
 
-// 3. PUT: Aggiorna lo stato del personaggio (es. aumenta pressure_level)
-app.put('/api/characters/:id', async (req, res) => {
-  try {
-    const updated = await Character.findByIdAndUpdate(
-      req.params.id, 
-      req.body, 
-      { new: true } // Restituisce l'oggetto aggiornato
-    );
-    res.json(updated);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server attivo su porta ${PORT}`));

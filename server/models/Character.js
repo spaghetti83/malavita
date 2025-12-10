@@ -114,6 +114,6 @@ const SuspectSchema = new Schema({
 });
 
 // Creazione del Modello
-const Suspect = mongoose.model('Suspect', SuspectSchema);
 
-module.exports = Suspect;
+const Character = mongoose.model('Character', SuspectSchema, 'characters');
+module.exports = Character;

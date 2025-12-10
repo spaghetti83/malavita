@@ -97,12 +97,23 @@
         "words": [
           "acetone",
           "chimica",
-          "sveglia",
+          "alarm clock",
           "timer"
         ],
         "reaction": "Eye twitch. 'I sell hardware. Everyone buys acetone. It proves nothing.'",
         "stat_mod": {
           "pressure": 15
+        }
+      },
+      {
+        "words": [
+          "phone cells",
+          "receipt",
+          "li jun confessed"
+        ],
+        "reaction": "Eye twitch. 'I sell hardware. Everyone buys acetone. It proves nothing.'",
+        "stat_mod": {
+          "pressure": 20
         }
       }
     ],
@@ -118,7 +129,7 @@
         "evidence_id": "ev_glitch_report",
         "reaction": "(SYSTEM: Panic). 'Your GPS is wrong! Technology fails! Li Jun saw me! HE SAW ME!'",
         "stat_mod": {
-          "pressure": 50,
+          "pressure": 80,
           "force_state": "level_3_breakdown"
         }
       }
