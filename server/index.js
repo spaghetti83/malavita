@@ -22,7 +22,24 @@ mongoose.connect(mongoURI)
 
 // --- ROTTE API ---
 
-// 1. GET: Scarica tutti i personaggi per la tua lista
+//LOAD SELECTED CHARACTER
+app.get('/character/:id',async (req,res) =>{
+    const id = req.params.id
+    console.log("ID",req.params.id)
+    try{
+        const char = await Character.findOne({'meta.id' : id})
+         console.log("found data for ", id)
+        res.send({character: char})
+        if(!char){ 
+            console.log("no character found!")
+            return res.status(404).send("no character found!");
+        }
+    }catch(error){
+        console.log(error)
+    }
+})
+
+
 app.get('/pressure', async (req, res) => {
     try{
         const char = await Character.findOne({'meta.id' : 'char_chen_101'})

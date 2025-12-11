@@ -4,7 +4,8 @@
   "description": "",
   "main": "aimodel.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +17,8 @@
     "express": "^5.2.1",
     "mongoose": "^9.0.1",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
