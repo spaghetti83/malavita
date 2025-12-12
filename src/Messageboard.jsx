@@ -6,12 +6,18 @@ import './App.css'
 const Messageboard = () =>   {
 
 const gptKey = import.meta.env.VITE_GPT_MINI_KEY;
+const semanticEnginePrompt = "" //PUT THE PROMPT HERE!! 
 const [message, setMessage] = useState("")
 const [chatLog,setChatLog] = useState("")
 const [chatHistory,setChatHistory] = useState([])
 const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
+const [semanticTrigger,setSemanticTrigger] = useState(null)
 
+const client = new OpenAI({
+  apiKey: gptKey,
+  dangerouslyAllowBrowser: true
+});
 
 const handleMessage = (e) => {
   
@@ -31,14 +37,34 @@ const loadCharacter = async (id)=> {
         })
         const data = await response.json() 
         console.log(data)
+        
         setCharacterLoaded(data)
-        setChatLog(`Speaking with: ${data.character.meta.name},`)
+        setSemanticTrigger()
+        setChatLog(`Speaking with: ${data.character.name},`)
+        console.log(data.prompt)
         return data
     }catch(error){
         console.log(error)
     }
 }
 
+const semanticEngine = async (message) => {
+
+  
+
+/*
+  const response =  await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+        {role: "system", content: semanticEnginePrompt},
+       ...chatHistory, 
+       {role: "user", content: message}
+    ]
+    });
+    */
+
+
+}
 
 const messagePressureDetection =  async (message) =>{
     const text = String(message).toLowerCase()
@@ -71,15 +97,10 @@ const addPressure = async () => {
 }
 }
 
-const client = new OpenAI({
-  apiKey: gptKey,
-  dangerouslyAllowBrowser: true
-});
-
 
 
 const npcChat = async (message) =>{
-    console.log("avvio messaggio...")
+    console.log("starting message...")
     console.log(message)
     
 try{
@@ -126,8 +147,9 @@ useEffect(()=>{
         id="send"
         onClick={() => {
           //npcChat(message);
+          semanticEngine()
           setMessage("")
-          messagePressureDetection(message)
+          //messagePressureDetection(message)
         }}
       >
         send

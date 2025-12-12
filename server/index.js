@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Character = require('./models/Character');
 const path = require('path')
+const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
@@ -27,13 +28,17 @@ app.get('/character/:id',async (req,res) =>{
     const id = req.params.id
     console.log("ID",req.params.id)
     try{
-        const char = await Character.findOne({'meta.id' : id})
+        const char = await Character.findOne({'_id' : id})
          console.log("found data for ", id)
-        res.send({character: char})
+        
         if(!char){ 
             console.log("no character found!")
             return res.status(404).send("no character found!");
         }
+        const promptPath = path.join(__dirname, 'data/logic/', 'semantic_analyzer_prompt.md');
+        const promptContent = fs.readFileSync(promptPath, 'utf8');
+        promptContent ? console.log('loaded file') : console.log('not loaded')
+        res.send({character: char,prompt: promptContent})
     }catch(error){
         console.log(error)
     }
