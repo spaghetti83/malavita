@@ -47,7 +47,7 @@ app.get('/character/:id',async (req,res) =>{
 
 app.get('/pressure', async (req, res) => {
     try{
-        const char = await Character.findOne({'meta.id' : 'char_chen_101'})
+        const char = await Character.findOne({'_id' : 'char_chen_101'})
         if(!char){
             console.log("no character found!")
             return res.status(404).send("Personaggio non trovato nel database!");

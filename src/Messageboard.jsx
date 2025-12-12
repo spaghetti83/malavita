@@ -6,12 +6,12 @@ import './App.css'
 const Messageboard = () =>   {
 
 const gptKey = import.meta.env.VITE_GPT_MINI_KEY;
-const semanticEnginePrompt = "" //PUT THE PROMPT HERE!! 
 const [message, setMessage] = useState("")
 const [chatLog,setChatLog] = useState("")
 const [chatHistory,setChatHistory] = useState([])
 const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
+const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [semanticTrigger,setSemanticTrigger] = useState(null)
 
 const client = new OpenAI({
@@ -41,6 +41,7 @@ const loadCharacter = async (id)=> {
         setCharacterLoaded(data)
         setSemanticTrigger()
         setChatLog(`Speaking with: ${data.character.name},`)
+        setSemanticEvaluetor(data.prompt)
         console.log(data.prompt)
         return data
     }catch(error){
@@ -49,19 +50,20 @@ const loadCharacter = async (id)=> {
 }
 
 const semanticEngine = async (message) => {
-
-  
-
-/*
+  console.log("semantic evaluetion started...")
+  try{
   const response =  await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
-        {role: "system", content: semanticEnginePrompt},
-       ...chatHistory, 
+        {role: "system", content: semanticEvaluetor},
        {role: "user", content: message}
     ]
     });
-    */
+    setStressLevel()
+    console.log(JSON.parse(response.choices[0].message.content))
+  }catch(error){
+    console.log(error)
+  }
 
 
 }
@@ -87,7 +89,8 @@ const addPressure = async () => {
     try{
         const response = await fetch('http://localhost:5000/pressure',{
             method : "GET",
-            headers: { 'Content-Type' : 'applications/json'}
+            headers: { 'Content-Type' : 'applications/json'},
+            body: {}
         })
         const data = await response.json()
         console.log(data)
@@ -147,7 +150,7 @@ useEffect(()=>{
         id="send"
         onClick={() => {
           //npcChat(message);
-          semanticEngine()
+          semanticEngine(message)
           setMessage("")
           //messagePressureDetection(message)
         }}
