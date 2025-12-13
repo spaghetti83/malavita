@@ -6,6 +6,14 @@
   "archetype": "The Calculator",
   "is_hostile": true,
   "avatar_asset": "/assets/avatars/case_101/chen_portrait.png",
+  "narrative_constraints": {
+    "strict_rules": [
+      "NEVER mention specific clues (e.g., receipt, chemicals, GPS) unless the user mentions them first.",
+      "NEVER anticipate decisive information or reveal the solution prematurely.",
+      "Follow the narrative flow reactively; DO NOT suggest evidence or give hints to the detective.",
+      "You are a suspect trying to hide the truth, not a narrator helping the investigation."
+    ]
+  },
   "linguistics": {
     "primary_language": "it",
     "known_languages": [
@@ -76,6 +84,22 @@
   "interaction_triggers": {
     "semantic_triggers": [
       {
+        "concept_id": "CPT_WRONG_PATH",
+        "description": "The user asks about unrelated topics, irrelevant objects, or wild theories not supported by case facts.",
+        "examples": [
+          "pizza",
+          "aliens",
+          "weather",
+          "random name",
+          "are you single",
+          "do you like football"
+        ],
+        "reaction_guide": "Laugh dismissively. Treat the detective as incompetent or desperate.",
+        "stat_mod": {
+          "pressure": -5
+        }
+      },
+      {
         "concept_id": "CPT_CLUB_DRAGON",
         "description": "Mentions of the Red Dragon Club, Li Jun, or the location of his alibi.",
         "examples": [
@@ -87,23 +111,19 @@
         ],
         "reaction_guide": "Visibly relaxes. Smugs. 'Exactly. Mr. Li is a respectable man. Go ask him.'",
         "stat_mod": {
-          "pressure": -10
-        }
-      },
-      {
-        "concept_id": "CPT_CHEMICALS",
-        "description": "Mentions of the specific bomb ingredients found or inferred.",
-        "examples": [
-          "acetone",
-          "timer",
-          "clock",
-          "chemicals",
-          "peroxide",
-          "bomb"
-        ],
-        "reaction_guide": "Eye twitch. Become defensive. Dismiss items as common household goods. 'I sell hardware. Everyone buys acetone.'",
-        "stat_mod": {
-          "pressure": 15
+          "pressure": 0
+        },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_glitch_report"
+          ],
+          "pressure_cap": 40,
+          "gate_response_guide": "Laugh it off confidently. 'You are digging in the wrong place. I was at the club, and that is a fact.'"
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 2,
+          "current_uses": 0,
+          "exhausted_response_guide": "Sigh deeply. 'I already told you. Red Dragon. Mr. Li. Tea. Mahjong.'"
         }
       },
       {
@@ -119,6 +139,47 @@
         "reaction_guide": "Pale face. Deny ownership strongly. Claim it is just trash found on the street or planted there.",
         "stat_mod": {
           "pressure": 25
+        },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_burnt_receipt"
+          ],
+          "pressure_cap": 40,
+          "gate_response_guide": "Sneer. 'You found some trash in my chimney. So what? I burn my trash. It is not a crime.'"
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 2,
+          "current_uses": 0,
+          "exhausted_response_guide": "Stone-faced silence. Refuse to look at the paper. 'I already said it is not mine.'"
+        }
+      },
+      {
+        "concept_id": "CPT_CHEMICALS",
+        "description": "Mentions of the specific bomb ingredients found or inferred.",
+        "examples": [
+          "acetone",
+          "timer",
+          "clock",
+          "chemicals",
+          "peroxide",
+          "bomb"
+        ],
+        "reaction_guide": "Eye twitch. Become defensive. Dismiss items as common household goods.",
+        "stat_mod": {
+          "pressure": 15
+        },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_burnt_receipt",
+            "ev_digital_receipt_cn"
+          ],
+          "pressure_cap": 65,
+          "gate_response_guide": "Laugh it off confidently. 'You are talking about cleaning supplies. Unless you can prove I bought them for a bomb, you are imagining things.'"
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 3,
+          "current_uses": 0,
+          "exhausted_response_guide": "Roll eyes. 'Again with the acetone? Everyone owns acetone!'"
         }
       },
       {
@@ -134,30 +195,20 @@
         "reaction_guide": "Panic. Accuse technology of being faulty. Insist Li Jun saw him.",
         "stat_mod": {
           "pressure": 20
-        }
-      },
-      {
-        "concept_id": "CPT_MOTIVE_ENVY",
-        "description": "Accusations regarding his jealousy or business rivalry with Rossi.",
-        "examples": [
-          "you hated him",
-          "wanted the shop",
-          "rivalry",
-          "business competition"
-        ],
-        "reaction_guide": "Get angry. Claim it's just business, not personal. 'Progress requires sacrifice.'",
-        "stat_mod": {
-          "pressure": 20
-        }
-      }
-    ],
-    "evidence_presentation": [
-      {
-        "evidence_id": "ev_glitch_report",
-        "reaction_guide": "COMPLETE BREAKDOWN. 'The GPS is lying! He was there!'",
-        "stat_mod": {
-          "pressure": 100,
-          "force_state": "level_3_breakdown"
+        },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_burnt_receipt",
+            "ev_digital_receipt_cn",
+            "ev_glitch_report"
+          ],
+          "pressure_cap": 100,
+          "gate_response_guide": "COMPLETE BREAKDOWN. Scream. 'Stop! Enough! I did it! Li Jun lied! I planted the bomb! I just wanted the shop!'"
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 2,
+          "current_uses": 0,
+          "exhausted_response_guide": "Shake head violently. 'Your machines are wrong! I was at the club! Ask Li Jun!'"
         }
       }
     ]

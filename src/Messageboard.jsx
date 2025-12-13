@@ -23,7 +23,7 @@ const handleMessage = (e) => {
   
   setMessage(e.target.value)
   if( e.key === 'Enter'){
-    npcChat(message)
+    semanticEngine(message)
     setMessage("")
   } 
 }
@@ -37,21 +37,22 @@ const loadCharacter = async (id)=> {
         })
         const data = await response.json() 
         console.log(data)
-        
-        setCharacterLoaded(data)
+        setCharacterLoaded(data.character)
         setChatLog(`Speaking with: ${data.character.name},`)
         setSemanticEvaluetor(data.prompt)
-        console.log(data.prompt)
-        return data
+        setStressLevel(data.character.state_metrics.pressure_level)
+        console.log("prompt loaded to the NPC...")
+        //return data
     }catch(error){
         console.log(error)
     }
 }
 
 const semanticEngine = async (message) => {
-  console.log("semantic evaluetion started...")
+  console.log("semantic evaluation started...")
+  setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
   try{
-  const response =  await client.chat.completions.create({
+  const evaluation =  await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
         {role: "system", content: semanticEvaluetor},
@@ -59,10 +60,19 @@ const semanticEngine = async (message) => {
     ]
     });
     
-    const stressMod = JSON.parse(response.choices[0].message.content)
+    const stressMod = JSON.parse(evaluation.choices[0].message.content)
     console.log("stress",stressMod.pressure_modifier)
     setStressModifier(stressMod.pressure_modifier)
-    addPressure()
+    if(stressMod.pressure_modifier !== 0){
+      console.log("adding pressure...")
+      addPressure(stressMod.pressure_modifier)
+      
+    }else{
+      console.log("no changes in pressure")
+      console.log("going to start npcChat with this message:",message)
+      npcChat(message)
+    }
+    
   }catch(error){
     console.log(error)
   }
@@ -70,40 +80,30 @@ const semanticEngine = async (message) => {
 
 }
 
-const messagePressureDetection =  async (message) =>{
-    const text = String(message).toLowerCase()
-    console.log(text)
-    
-    const keyWords = characterLoaded.character.interaction_triggers.keywords.map( e => e.words)
-    
-    for(let i = 0; i < keyWords.length; i++){
-      const isTriggering = keyWords[i].some( word => text.includes(word))
-      console.log("TRIGGERED level",i,isTriggering)
-      if(isTriggering){
-        setStressLevel(i)
-      }
-    }
-}
 useEffect(()=>{
-  //console.log(stressLevel)
-},[stressLevel])
+console.log("suspect stress level",stressLevel)
+},[stressLevel,characterLoaded,stressModifier])
 
-const addPressure = async () => {
+const addPressure = async (pressure) => {
   console.log("character",characterLoaded)
-  const newPressure = characterLoaded.character.state_metrics.pressure_level + stressModifier
+  console.log("stress value: ", characterLoaded.state_metrics.pressure_level,"+",pressure)
+  const newPressure = characterLoaded.state_metrics.pressure_level + pressure
+  console.log("new pressure level",newPressure)
     try{
         const response = await fetch('http://localhost:5000/pressure',{
             method : "POST",
-            headers: { 'Content-Type' : 'applications/json'},
-            body: {
-              id:characterLoaded.id,
+            headers: { 'Content-Type' : 'application/json'},
+            body: JSON.stringify({
+              id: characterLoaded.id,
               pressure: newPressure
-            }
+            })
         })
         const data = await response.json()
-        console.log(data)
-        setCharacterLoaded(data)
-        
+        console.log(data.message)
+        loadCharacter("char_chen_101")
+        //setCharacterLoaded(data)
+        //console.log("after added pressure loaded stress: " ,characterLoaded.state_metrics.stressLevel)
+        npcChat(message)
 }catch(error){
     console.log(error)
 }
@@ -112,15 +112,16 @@ const addPressure = async () => {
 
 
 const npcChat = async (message) =>{
-    console.log("starting message...")
-    console.log(message)
+    console.log("npcChat func. starting...")
+    console.log("message: ",message)
     
 try{
-    const chen = "char_chen_101" //TO CHANGE
+    
     console.log("loading character...")
     const character = characterLoaded
     console.log("DATA: ",character)
-    setChatLog(<span style={{ fontStyle: 'italic'}}>{character.character.meta.name} is thinking... </span>)
+    
+    setChatLog(<span style={{ fontStyle: 'italic'}}>{character.name} is thinking... </span>)
     const response =  await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
@@ -128,13 +129,15 @@ try{
        ...chatHistory, 
        {role: "user", content: message}
     ]
+
+    
     });
     console.log("connected.")
     setChatHistory(prev => [...prev,{role: "user", content: message}])
-    console.log(response.choices[0].message.content) 
+    console.log("response from NPC: ",response.choices[0].message.content) 
     setChatHistory((prevItems) => [...prevItems,{role: "assistant", content: response.choices[0].message.content}])
     setChatLog(response.choices[0].message.content)
-    console.log(chen.state_metrics.pressure_level)
+    
 }catch(err){
     console.log("THIS IS ERROR",err)
 }
@@ -143,7 +146,7 @@ try{
 
 useEffect(()=>{
     //CHAT HISTORY UPDATE
-    chatHistory.map(e => console.log("History: ",e.content))
+   // chatHistory.map(e => console.log("History: ",e.content))
 },[chatHistory])
 
 

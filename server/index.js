@@ -46,6 +46,7 @@ app.get('/character/:id',async (req,res) =>{
 
 
 app.post('/pressure', async (req, res) => {
+    console.log("server ---> pressure...")
     try{
         const char = await Character.findOne({'_id' : 'char_chen_101'})
         if(!char){
@@ -55,7 +56,7 @@ app.post('/pressure', async (req, res) => {
         
         char.state_metrics.pressure_level = req.body.pressure
         await char.save()
-        res.send(char)
+        res.send({message: "pressure correctly saved"})
     }catch(error){
         console.error(error);
         res.status(500).send('Errore: ' + error.message);
