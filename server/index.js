@@ -45,18 +45,17 @@ app.get('/character/:id',async (req,res) =>{
 })
 
 
-app.get('/pressure', async (req, res) => {
+app.post('/pressure', async (req, res) => {
     try{
         const char = await Character.findOne({'_id' : 'char_chen_101'})
         if(!char){
             console.log("no character found!")
             return res.status(404).send("Personaggio non trovato nel database!");
         }
-        let pressureLevel = char.state_metrics.pressure_level
-        let newPressure = pressureLevel + 5
-        char.state_metrics.pressure_level = newPressure
+        
+        char.state_metrics.pressure_level = req.body.pressure
         await char.save()
-        res.send({message: newPressure})
+        res.send(char)
     }catch(error){
         console.error(error);
         res.status(500).send('Errore: ' + error.message);

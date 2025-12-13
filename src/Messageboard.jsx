@@ -12,7 +12,7 @@ const [chatHistory,setChatHistory] = useState([])
 const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
-const [semanticTrigger,setSemanticTrigger] = useState(null)
+const [stressModifier,setStressModifier] = useState(0)
 
 const client = new OpenAI({
   apiKey: gptKey,
@@ -39,7 +39,6 @@ const loadCharacter = async (id)=> {
         console.log(data)
         
         setCharacterLoaded(data)
-        setSemanticTrigger()
         setChatLog(`Speaking with: ${data.character.name},`)
         setSemanticEvaluetor(data.prompt)
         console.log(data.prompt)
@@ -59,8 +58,11 @@ const semanticEngine = async (message) => {
        {role: "user", content: message}
     ]
     });
-    setStressLevel()
-    console.log(JSON.parse(response.choices[0].message.content))
+    
+    const stressMod = JSON.parse(response.choices[0].message.content)
+    console.log("stress",stressMod.pressure_modifier)
+    setStressModifier(stressMod.pressure_modifier)
+    addPressure()
   }catch(error){
     console.log(error)
   }
@@ -85,16 +87,23 @@ const messagePressureDetection =  async (message) =>{
 useEffect(()=>{
   //console.log(stressLevel)
 },[stressLevel])
+
 const addPressure = async () => {
+  console.log("character",characterLoaded)
+  const newPressure = characterLoaded.character.state_metrics.pressure_level + stressModifier
     try{
         const response = await fetch('http://localhost:5000/pressure',{
-            method : "GET",
+            method : "POST",
             headers: { 'Content-Type' : 'applications/json'},
-            body: {}
+            body: {
+              id:characterLoaded.id,
+              pressure: newPressure
+            }
         })
         const data = await response.json()
         console.log(data)
-        getMessage()
+        setCharacterLoaded(data)
+        
 }catch(error){
     console.log(error)
 }
