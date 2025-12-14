@@ -46,15 +46,36 @@ app.get('/character/:id',async (req,res) =>{
 
 
 app.post('/pressure', async (req, res) => {
-    console.log("server ---> pressure...")
+    console.log("server ---> pressure function")
+    console.log(req.body)
     try{
         const char = await Character.findOne({'_id' : 'char_chen_101'})
         if(!char){
             console.log("no character found!")
-            return res.status(404).send("Personaggio non trovato nel database!");
+            return res.status(404).send("character not found!");
         }
-        
-        char.state_metrics.pressure_level = req.body.pressure
+        console.log("previus level of stress", char.state_metrics.pressure_level)
+        let pressureAccumulated = 0
+        char.interaction_triggers.semantic_triggers.map((e) => {
+            ///con .some se i concept_id sono due li somma entrambi. CAMBIARE!!
+            //if(req.body.semantic_triggers.some( id => e.concept_id === id)){
+            req.body.semantic_triggers.results.forEach((result) => {
+                if (e.concept_id === result.triggered_ids) {
+                    if (e.decay_mechanic.current_uses < e.decay_mechanic.max_effective_uses) {
+                        e.decay_mechanic.current_uses = e.decay_mechanic.current_uses + 1
+                        console.log(e.concept_id, "used", e.decay_mechanic.current_uses, "time(s) of ", e.decay_mechanic.max_effective_uses)
+                        pressureAccumulated = pressureAccumulated + result.pressure_modifiers
+                        console.log("adding",result.pressure_modifiers, "of",pressureAccumulated )
+                        
+                    } else {
+                        console.log("no increment pressure, concept id", e.concept_id, "already investigated")
+                    }
+                }
+
+            })
+        })
+        console.log("total pressure accomulated", pressureAccumulated)
+        char.state_metrics.pressure_level = char.state_metrics.pressure_level + pressureAccumulated
         await char.save()
         res.send({message: "pressure correctly saved"})
     }catch(error){

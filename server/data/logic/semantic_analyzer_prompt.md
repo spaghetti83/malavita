@@ -29,8 +29,6 @@ Extract the evidence_id.
 
 Extract the stat_mod.pressure value.
 
-Extract stat_mod.force_state (if present).
-
 STEP 2: Semantic Concept Detection
 
 Scan User Input for concepts listed in semantic_triggers.
@@ -45,19 +43,24 @@ Extract the stat_mod.pressure value.
 
 STEP 3: Output Formatting
 
-Collect all found pressure values into a single array: pressure_modifiers.
+For every match found in Step 1 and Step 2, create a data object following this structure: {"triggered_ids": <ID>, "pressure_modifiers": <value>}.
 
-Collect all found IDs (concepts and evidence) into: triggered_ids.
-
-If force_state was detected in Step 1, set force_breakdown: true.
+Compile these objects into a single list called results.
 
 OUTPUT FORMAT
 
 Return ONLY valid JSON. No markdown.
 
 {
-  "pressure_modifiers": [<integer>, <integer>], // List of ALL pressure values found (e.g. [15, 50])
-  "triggered_ids": ["<concept_id>", "<evidence_id>"], // IDs of matched triggers
-  "force_breakdown": <boolean>, // True if any matched evidence forces a state change
+  "results": [
+    {
+      "triggered_ids": "<concept_id_or_evidence_id>",
+      "pressure_modifiers": <integer>
+    },
+    {
+      "triggered_ids": "<another_id>",
+      "pressure_modifiers": <integer>
+    }
+  ],
   "reasoning": "Brief technical explanation of matches"
 }

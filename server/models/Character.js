@@ -1,32 +1,59 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// Sottoschema per la linguistica
+// 1. Sottoschema: Linguistica
 const LinguisticsSchema = new Schema({
   primary_language: { type: String, required: true },
-  known_languages: [{ type: String }],
-  proficiency: { type: Map, of: String }, // Mappa flessibile: "it": "Fluent..."
+  known_languages: [{ type: String }], // Array di stringhe
+  proficiency: { type: Map, of: String }, // Gestisce chiavi dinamiche come "it", "zh"
   unknown_language_reaction: {
     behavior: String,
     response_guide: String
   }
-});
+}, { _id: false });
 
-// Sottoschema per i trigger semantici (Il cuore della logica)
+// 2. Sottoschema: Meccanica di Decadimento (Decay Mechanic)
+// NOTA: Ho corretto "ax_effective_uses" in "max_effective_uses" come da JSON
+const DecayMechanicSchema = new Schema({
+  max_effective_uses: { type: Number, default: 1 }, 
+  current_uses: { type: Number, default: 0 },
+  exhausted_response_guide: { type: String }
+}, { _id: false });
+
+// 3. Sottoschema: Trigger Semantici
 const SemanticTriggerSchema = new Schema({
   concept_id: { type: String, required: true },
   description: String,
   examples: [{ type: String }],
   reaction_guide: String,
+  
+  // Stat Modificatori
   stat_mod: {
     pressure: { type: Number, default: 0 },
     force_state: String
-  }
-});
+  },
 
-// Schema Principale del Personaggio
+  // Qui includiamo lo schema corretto per il decay
+  decay_mechanic: DecayMechanicSchema 
+}, { _id: false });
+
+// 4. Sottoschema: Presentazione Prove
+// Aggiornato per riflettere il JSON che contiene "found": true
+const EvidenceTriggerSchema = new Schema({
+  evidence_id: { type: String, required: true },
+  found: { type: Boolean, default: false }, // Aggiunto basandosi sul JSON
+  reaction_guide: String,
+  stat_mod: {
+    pressure: Number,
+    force_state: String
+  }
+}, { _id: false });
+
+// 5. Schema Principale Character
 const CharacterSchema = new Schema({
-  _id: { type: String, required: true }, // Es: "char_chen_101"
+  // _id gestito manualmente come stringa ("char_chen_101")
+  _id: { type: String, required: true }, 
+  
   name: { type: String, required: true },
   codename: String,
   role: { type: String, enum: ['Suspect', 'Witness', 'Ally'], required: true },
@@ -34,7 +61,11 @@ const CharacterSchema = new Schema({
   is_hostile: { type: Boolean, default: false },
   avatar_asset: String,
 
-  // Moduli Logici
+  // NUOVO CAMPO: Mancava nel tuo schema originale, ma c'è nel JSON
+  narrative_constraints: {
+    strict_rules: [{ type: String }]
+  },
+
   linguistics: LinguisticsSchema,
 
   profile: {
@@ -63,7 +94,8 @@ const CharacterSchema = new Schema({
       location: String,
       action: String,
       motive: String,
-      weapon: [{ type: String }], // Array per gestire più componenti (sveglia, acetone...)
+      // Aggiornato ad Array di Stringhe come da JSON (che ne ha 3)
+      weapon: [{ type: String }], 
       mistake: String
     }
   },
@@ -85,14 +117,7 @@ const CharacterSchema = new Schema({
 
   interaction_triggers: {
     semantic_triggers: [SemanticTriggerSchema],
-    evidence_presentation: [{
-      evidence_id: String,
-      reaction_guide: String,
-      stat_mod: {
-        pressure: Number,
-        force_state: String
-      }
-    }]
+    evidence_presentation: [EvidenceTriggerSchema]
   },
 
   anti_tamper_protocol: {
@@ -100,7 +125,8 @@ const CharacterSchema = new Schema({
     sensitivity_threshold: { type: Number, default: 0.8 },
     fallback_response: String
   }
-}, { _id: false }); // _id è gestito manualmente come stringa, non ObjectId automatico
+
+}, { timestamps: true }); // Opzionale: aggiunge createdAt e updatedAt
 
 const Character = mongoose.model('Character', CharacterSchema);
 
