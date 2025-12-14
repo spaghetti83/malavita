@@ -44,7 +44,7 @@ const CharacterSchema = new Schema({
   },
 
   state_metrics: {
-    pressure_level: { type: Number, default: 0, min: 0, max: 100 },
+    pressure_level: { type: Number, default: 0 },
     pressure_thresholds: {
       nervous: { type: Number, default: 40 },
       breaking_point: { type: Number, default: 90 }

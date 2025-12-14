@@ -14,6 +14,7 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState(0)
+const [pressureLimits,setPressureLimits] = useState([])
 const [evidences,setEvidences] = useState(["ev_burnt_receipt","ev_digital_receipt_cn","ev_glitch_report"])
 
 const client = new OpenAI({
@@ -41,8 +42,10 @@ const loadCharacter = async (id)=> {
         console.log(data)
         setCharacterLoaded(data.character)
         setChatLog(`Speaking with: ${data.character.name},`)
-        setSemanticEvaluetor(data.prompt)
         setStressLevel(data.character.state_metrics.pressure_level)
+        setPressureLimits(data.character.interaction_triggers.semantic_triggers)
+        setSemanticEvaluetor(JSON.stringify({triggered_concepts: data.character.interaction_triggers.semantic_triggers, prompt: data.prompt}))
+
         console.log("prompt loaded to the NPC...")
         //return data
     }catch(error){
@@ -63,7 +66,7 @@ const semanticEngine = async (message) => {
     });
     
     const stressMod = JSON.parse(evaluation.choices[0].message.content)
-    console.log("stress",stressMod.pressure_modifier)
+    console.log("STRESS",stressMod)
     setStressModifier(stressMod.pressure_modifier)
     if(stressMod.pressure_modifier !== 0){
       console.log("adding pressure...")
@@ -90,18 +93,12 @@ console.log("suspect stress level",stressLevel)
 
 
 const addPressure = async (pressure) => {
-  console.log("character",characterLoaded)
+  console.log("adding pressure to: ",characterLoaded.name)
   console.log("stress value: ", characterLoaded.state_metrics.pressure_level,"+",pressure)
   const newPressure = characterLoaded.state_metrics.pressure_level + pressure
-  console.log("new pressure level",newPressure)
-
-  characterLoaded.interaction_trigger.semantic_triggers.map((e)=>{
-   const pressureCap = e.pressure_gate.pressure_cup !== undefined ? e.pressure_gate.pressure_cup : ""
-    /* const requieredEvidence = e.pressure_gate.required_evidence_list
-    const dacayMachanic = e.semantic_trigger.pressure_gate.decay_mechanic */
-    console.log("Presure Cap",pressureCap)
-  })
-  
+  console.log("new pressure level",newPressure) 
+  console.log("Presure Cap",pressureLimits)
+  console.log("stress evaluetor response",pressure)
   
     try{
         const response = await fetch('http://localhost:5000/pressure',{
@@ -113,10 +110,12 @@ const addPressure = async (pressure) => {
             })
         })
         const data = await response.json()
+        console.log("pressure level updated correctly")
         console.log(data.message)
         loadCharacter(selelectedChar) 
         npcChat(message)
 }catch(error){
+  console.log("pressure level NOT updated")
     console.log(error)
 }
 }

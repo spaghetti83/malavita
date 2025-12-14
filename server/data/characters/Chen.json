@@ -97,6 +97,18 @@
         "reaction_guide": "Laugh dismissively. Treat the detective as incompetent or desperate.",
         "stat_mod": {
           "pressure": -5
+        },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_glitch_report"
+          ],
+          "pressure_cap": -25,
+          "gate_response_guide": "'You are talking about nonsense'"
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 5,
+          "current_uses": 0,
+          "exhausted_response_guide": "Sigh deeply. 'I cant take it anymore, stop it'"
         }
       },
       {
