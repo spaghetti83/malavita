@@ -13,7 +13,7 @@ const [chatHistory,setChatHistory] = useState([])
 const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
-const [stressModifier,setStressModifier] = useState(0)
+const [stressModifier,setStressModifier] = useState([])
 const [pressureLimits,setPressureLimits] = useState([])
 const [evidences,setEvidences] = useState(["ev_burnt_receipt","ev_digital_receipt_cn","ev_glitch_report"])
 
@@ -62,15 +62,16 @@ const semanticEngine = async (message) => {
     messages: [
         {role: "system", content: semanticEvaluetor},
        {role: "user", content: message}
-    ]
+    ],
+    temperature: 0.0
     });
     
     const stressMod = JSON.parse(evaluation.choices[0].message.content)
     console.log("STRESS",stressMod)
-    setStressModifier(stressMod.pressure_modifier)
-    if(stressMod.pressure_modifier !== 0){
-      console.log("adding pressure...")
-      addPressure(stressMod.pressure_modifier)
+    setStressModifier(stressMod.pressure_modifiers)
+    if(stressMod.pressure_modifiers.length !== 0){
+      console.log("adding pressure...",stressMod.pressure_modifiers )
+      addPressure(stressMod.pressure_modifiers)
       
     }else{
       console.log("no changes in pressure")
@@ -93,12 +94,14 @@ console.log("suspect stress level",stressLevel)
 
 
 const addPressure = async (pressure) => {
+  console.log("checking valure of pressure:", pressure)
+  const pressureVal = pressure.reduce((tot, acc)=>tot + acc)
   console.log("adding pressure to: ",characterLoaded.name)
-  console.log("stress value: ", characterLoaded.state_metrics.pressure_level,"+",pressure)
-  const newPressure = characterLoaded.state_metrics.pressure_level + pressure
+  console.log("stress value: ", characterLoaded.state_metrics.pressure_level,"+",pressureVal)
+  const newPressure = characterLoaded.state_metrics.pressure_level + pressureVal
   console.log("new pressure level",newPressure) 
   console.log("Presure Cap",pressureLimits)
-  console.log("stress evaluetor response",pressure)
+  console.log("stress evaluetor response",pressureVal)
   
     try{
         const response = await fetch('http://localhost:5000/pressure',{

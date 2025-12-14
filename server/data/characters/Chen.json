@@ -98,13 +98,6 @@
         "stat_mod": {
           "pressure": -5
         },
-        "pressure_gate": {
-          "required_evidence_list": [
-            "ev_glitch_report"
-          ],
-          "pressure_cap": -25,
-          "gate_response_guide": "'You are talking about nonsense'"
-        },
         "decay_mechanic": {
           "max_effective_uses": 5,
           "current_uses": 0,
@@ -125,13 +118,6 @@
         "stat_mod": {
           "pressure": 0
         },
-        "pressure_gate": {
-          "required_evidence_list": [
-            "ev_glitch_report"
-          ],
-          "pressure_cap": 40,
-          "gate_response_guide": "Laugh it off confidently. 'You are digging in the wrong place. I was at the club, and that is a fact.'"
-        },
         "decay_mechanic": {
           "max_effective_uses": 2,
           "current_uses": 0,
@@ -150,14 +136,7 @@
         ],
         "reaction_guide": "Pale face. Deny ownership strongly. Claim it is just trash found on the street or planted there.",
         "stat_mod": {
-          "pressure": 25
-        },
-        "pressure_gate": {
-          "required_evidence_list": [
-            "ev_burnt_receipt"
-          ],
-          "pressure_cap": 40,
-          "gate_response_guide": "Sneer. 'You found some trash in my chimney. So what? I burn my trash. It is not a crime.'"
+          "pressure": 10
         },
         "decay_mechanic": {
           "max_effective_uses": 2,
@@ -180,14 +159,6 @@
         "stat_mod": {
           "pressure": 15
         },
-        "pressure_gate": {
-          "required_evidence_list": [
-            "ev_burnt_receipt",
-            "ev_digital_receipt_cn"
-          ],
-          "pressure_cap": 65,
-          "gate_response_guide": "Laugh it off confidently. 'You are talking about cleaning supplies. Unless you can prove I bought them for a bomb, you are imagining things.'"
-        },
         "decay_mechanic": {
           "max_effective_uses": 3,
           "current_uses": 0,
@@ -208,20 +179,21 @@
         "stat_mod": {
           "pressure": 20
         },
-        "pressure_gate": {
-          "required_evidence_list": [
-            "ev_burnt_receipt",
-            "ev_digital_receipt_cn",
-            "ev_glitch_report"
-          ],
-          "pressure_cap": 100,
-          "gate_response_guide": "COMPLETE BREAKDOWN. Scream. 'Stop! Enough! I did it! Li Jun lied! I planted the bomb! I just wanted the shop!'"
-        },
         "decay_mechanic": {
           "max_effective_uses": 2,
           "current_uses": 0,
           "exhausted_response_guide": "Shake head violently. 'Your machines are wrong! I was at the club! Ask Li Jun!'"
         }
+      }
+    ],
+    "evidence_presentation": [
+      {
+        "evidence_id": "ev_burnt_receipt",
+        "found": true
+      },
+      {
+        "evidence_id": "ev_glitch_report",
+        "found": true
       }
     ]
   },
