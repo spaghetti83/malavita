@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import './App.css'
 
 
-const Messageboard = () =>   {
+const Messageboard = (props) =>   {
 
 const gptKey = import.meta.env.VITE_GPT_MINI_KEY;
 const [selelectedChar,setSelectedChar] = useState("char_chen_101")
@@ -14,8 +14,10 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
+
 const [pressureLimits,setPressureLimits] = useState([])
 const [evidences,setEvidences] = useState(["ev_burnt_receipt","ev_digital_receipt_cn","ev_glitch_report"])
+
 
 
 const client = new OpenAI({
@@ -54,6 +56,7 @@ const loadCharacter = async (id)=> {
     }
 }
 
+
 const semanticEngine = async (message) => {
   console.log("semantic evaluation started...")
   setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
@@ -91,9 +94,6 @@ useEffect(()=>{
 console.log("suspect stress level",stressLevel)
 },[stressLevel,characterLoaded,stressModifier])
 
-
-
-
 const addPressure = async (pressure) => {
   console.log("checking valure of pressure:", pressure)
   const pressureObj = pressure
@@ -124,8 +124,6 @@ const addPressure = async (pressure) => {
     console.log(error)
 }
 }
-
-
 
 const npcChat = async (message) =>{
     console.log("npcChat func. starting...")
@@ -172,6 +170,7 @@ useEffect(()=>{
         {chatLog}
       </div>
       <p>Stress level {stressLevel}</p>
+      
       <input id="text" type="text" value={message} placeholder="ask something..." onChange={handleMessage} onKeyDown={handleMessage}/>
       <button onClick={() => loadCharacter("char_chen_101")}>carica Chen</button>
       <button

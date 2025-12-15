@@ -5,13 +5,15 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const { MONGODB_USR, MONGODB_PSW } = process.env;
 
-const fileName= "Chen.json"
+
 //SETTING FILE HERE
 const DATA_TO_SEED = [
+  
   {
-    collection: 'characters',
-    filePath: `./data/characters/${fileName}`
-  },
+    collection: 'cases',
+    filePath: `./data/cases/cases_list.json`
+  }
+
   // Puoi aggiungere altri file qui
   // { collection: 'characters', filePath: './data/cases/case_101/characters/char_silvia.json' }
 ];
@@ -34,7 +36,7 @@ const seedDatabase = async () => {
       const collection = db.collection(item.collection);
       
       // Opzionale: Pulisce la vecchia versione del personaggio se esiste già
-      await collection.deleteOne({ _id: jsonData._id || jsonData.meta.id });
+      //await collection.deleteOne({ _id: jsonData._id || jsonData.meta.id });
 
       // 3. Inserisce il nuovo
       await collection.insertOne(jsonData);

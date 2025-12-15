@@ -1,8 +1,8 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Character = require('./models/Character');
+const CaseModel = require('./models/Cases_list')
 const path = require('path')
 const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
@@ -44,6 +44,19 @@ app.get('/character/:id',async (req,res) =>{
     }
 })
 
+app.get('/cases/:id', async (req,res) =>{
+    const id = req.params.id
+    console.log("id cases", id)
+    try {
+        const casesList = await CaseModel.findOne(({'id_file': id}))
+        if (!casesList){
+            console.log("cases list not found!")
+        }
+        res.send({ cases_list: casesList})
+    }catch(error){
+        console.log(error)
+    }
+})
 
 app.post('/pressure', async (req, res) => {
     console.log("server ---> pressure function")

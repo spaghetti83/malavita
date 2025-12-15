@@ -1,0 +1,53 @@
+{
+  "id_file": "master_cases_list",
+  "registry_version": "1.0",
+  "available_cases": [
+    {
+      "id": "case_101",
+      "display_title": "Ashes and Envy",
+      "folder_path": "/data/cases/case_101_ashes_and_envy.json",
+      "difficulty": "EASY",
+      "status": "UNLOCKED",
+      "description": "A local market burned down at 03:00 AM. The owner cries arson, the rival smiles too much. Find the spark.",
+      "tags": [
+        "Arson",
+        "Triad",
+        "Chemistry"
+      ]
+    },
+    {
+      "id": "case_102",
+      "display_title": "The Silent Docker",
+      "folder_path": "/data/cases/case_102_silent_docker.json",
+      "difficulty": "MEDIUM",
+      "status": "LOCKED",
+      "unlock_condition": {
+        "previous_case": "case_101",
+        "min_reputation": 20
+      },
+      "description": "A body found in the harbor. No ID, no fingerprints, but a very expensive watch. The docker union is silent.",
+      "tags": [
+        "Murder",
+        "Smuggling",
+        "Cold Case"
+      ]
+    },
+    {
+      "id": "case_103",
+      "display_title": "Digital Poison",
+      "folder_path": "/data/cases/case_103_digital_poison.json",
+      "difficulty": "HARD",
+      "status": "LOCKED",
+      "unlock_condition": {
+        "previous_case": "case_102",
+        "special_skill": "tech_savvy"
+      },
+      "description": "An influencer died live on stream. It looks like a heart attack, but Glitch found strange packets in her router logs.",
+      "tags": [
+        "Cyber Crime",
+        "Stalking",
+        "Tech"
+      ]
+    }
+  ]
+}
