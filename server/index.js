@@ -23,6 +23,22 @@ mongoose.connect(mongoURI)
 
 // --- ROTTE API ---
 
+
+app.get('/characterList', async (req,res) =>{
+    const folder = path.join( __dirname , './data/characters/')
+    console.log(folder)
+    fs.readdir(folder , (err,files)=>{
+
+        if(err){
+            console.log("can't load the character list, sorry!")
+            return res.send({message: "can't load the character list, sorry!"})
+        }
+        console.log(files)
+        res.json(files)
+    })
+})
+
+
 //LOAD SELECTED CHARACTER
 app.get('/character/:id',async (req,res) =>{
     const id = req.params.id

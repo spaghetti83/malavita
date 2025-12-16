@@ -5,8 +5,8 @@ import CasesList from './CasesList'
 
 
 const App = () => {
-  const [casesList,setCasesList] = useState("")
-  const [characterLoaded, setCharacterLoaded] = useState("")
+  const [casesList,setCasesList] = useState(null)
+  
 
   const LoadCasesList = async () =>{
   
@@ -28,38 +28,15 @@ const App = () => {
     
 
 }
-  const loadCharacter = async (id)=> {
-    try{
-        console.log(`asking for ID: ${id}`)
-        const response = await fetch(`http://localhost:5000/character/${id}`,{
-            method: 'GET',
-            headers: {'Content-Type' : 'application/json'}
-        })
-        const data = await response.json() 
-        console.log(data)
-        setCharacterLoaded(data.character)
-        
-        console.log("prompt loaded to the NPC...")
-        //return data
-    }catch(error){
-        console.log(error)
-    }
-}
-
-
+ 
 useEffect(()=>{
   LoadCasesList()
 },[])
 
 
-
-
-
-
   return (
   <>
   {casesList ? <CasesList cases={casesList}/> : <p>laoding component...</p>}
-  
   <Messageboard />
   </>
 )

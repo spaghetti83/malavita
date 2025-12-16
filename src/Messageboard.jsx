@@ -14,7 +14,7 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
-
+const [characterList, setCharacterList] = useState([])
 const [pressureLimits,setPressureLimits] = useState([])
 const [evidences,setEvidences] = useState(["ev_burnt_receipt","ev_digital_receipt_cn","ev_glitch_report"])
 
@@ -34,7 +34,25 @@ const handleMessage = (e) => {
   } 
 }
 
+const loadCharacterList = async () => {
+  console.log("loading character list...")
+  try{
+      const response = await fetch('http://localhost:5000/characterList',{
+          method: 'GET',
+          headers: {'Content-Type' : 'application/json'}
+      })
+      const data = await response.json()
+      console.log("character list loaded!",data)
+      setCharacterList(data)
+  }catch(err){
+    console.log(err)
+  }
+}
+useEffect(()=>{
+loadCharacterList()
+},[])
 const loadCharacter = async (id)=> {
+  loadCharacterList()
     try{
         console.log(`asking for ID: ${id}`)
         const response = await fetch(`http://localhost:5000/character/${id}`,{
@@ -143,7 +161,9 @@ try{
        ...chatHistory, 
        {role: "user", content: message}
     ],
-    max_tokens : 50
+    max_tokens : 80,
+    temperature: 0.7,
+    top_p: 0.95
     
     });
     console.log("connected.")
@@ -171,8 +191,7 @@ useEffect(()=>{
       </div>
       <p>Stress level {stressLevel}</p>
       
-      <input id="text" type="text" value={message} placeholder="ask something..." onChange={handleMessage} onKeyDown={handleMessage}/>
-      <button onClick={() => loadCharacter("char_chen_101")}>carica Chen</button>
+      <input id="text" type="text" value={message} placeholder="ask something..." onChange={handleMessage} onKeyDown={handleMessage} autoComplete="off"/>
       <button
         id="send"
         onClick={() => {
@@ -181,12 +200,21 @@ useEffect(()=>{
           setMessage("")
           //messagePressureDetection(message)
         }}
+        
       >
         send
       </button>
-      
+      <p>
+        <button onClick={() =>  loadCharacter("char_chen_101")}>carica Chen</button>
+      </p>
+
+      {characterList ? characterList.map( (e,index) => (
+        <button key={index}>{e}</button>
+      )):<p>loading characters list...</p>}
+
+  
     </>
-  );
+  )
 }
 
 export default Messageboard

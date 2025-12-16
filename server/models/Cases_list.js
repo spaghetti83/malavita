@@ -1,73 +1,43 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// 1. Definiamo lo schema per le condizioni di sblocco (Unlock Condition)
-// Questo è un sotto-documento che useremo dentro lo schema principale.
-const UnlockConditionSchema = new Schema({
-  previous_case: {
-    type: String,
-    ref: 'Case' // Questo aiuta se in futuro vorrai collegare i casi tra loro
-  },
-  min_reputation: {
-    type: Number,
-    min: 0 // La reputazione non può essere negativa
-  },
-  special_skill: {
-    type: String
-  }
-}, { _id: false }); // Non serve un ID univoco per questo piccolo oggetto interno
-
-// 2. Definiamo lo schema principale del Caso (Case)
-const CaseSchema = new Schema({
-  // L'ID personalizzato che usi tu (es. "case_101")
-  id: { 
-    type: String, 
-    required: true, 
-    unique: true // Assicura che non ci siano due casi con lo stesso ID
-  },
-  
-  display_title: { 
-    type: String, 
-    required: true 
-  },
-  
-  folder_path: { 
-    type: String, 
-    required: true 
-  },
-  
-  // Usiamo un ENUM per limitare i valori possibili
+// Sottoschema per un singolo caso dentro la lista
+const CaseEntrySchema = new Schema({
+  id: { type: String, required: true }, // es: "case_101"
+  display_title: { type: String, required: true },
+  folder_path: { type: String, required: true },
   difficulty: { 
     type: String, 
-    enum: ['EASY', 'MEDIUM', 'HARD'], 
+    enum: ['EASY', 'MEDIUM', 'HARD', 'EXPERT'],
     default: 'EASY'
   },
-  
   status: { 
     type: String, 
-    enum: ['LOCKED', 'UNLOCKED', 'COMPLETED'], 
+    enum: ['LOCKED', 'UNLOCKED', 'COMPLETED'],
     default: 'LOCKED'
   },
+  description: { type: String, required: true },
+  tags: [{ type: String }], // es: ["Arson", "Triad"]
   
-  description: { 
-    type: String, 
-    required: true 
-  },
-  
-  // Un array di stringhe semplice
-  tags: [String],
-  
-  // Qui inseriamo lo schema secondario creato sopra
-  unlock_condition: UnlockConditionSchema,
-
-  // Aggiungo campi utili per la gestione del database (data creazione/modifica)
-  createdAt: {
-    type: Date,
-    default: Date.now
+  // Condizioni di sblocco opzionali
+  unlock_condition: {
+    previous_case: String, // ID del caso precedente richiesto
+    min_reputation: Number, // (Se lo rimetti in futuro)
+    special_skill: String   // (Se lo rimetti in futuro)
   }
 });
 
-// 3. Creiamo il Modello
-const CaseModel = mongoose.model('Case', CaseSchema);
+// Schema Principale della Lista Casi
+// Questo riflette l'intero file cases_list.json
+const CaseListSchema = new Schema({
+  id_file: { type: String, required: true, unique: true }, // "master_cases_list"
+  user_id: { type: String, required: true }, // Link all'utente (es. "user_12345")
+  registry_version: { type: String, default: "1.0" },
+  
+  // L'array che contiene tutti i casi
+  available_cases: [CaseEntrySchema]
+});
 
-module.exports = CaseModel;
+const CaseList = mongoose.model('CaseList', CaseListSchema);
+
+module.exports = CaseList;

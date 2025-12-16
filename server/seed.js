@@ -10,8 +10,8 @@ const { MONGODB_USR, MONGODB_PSW } = process.env;
 const DATA_TO_SEED = [
   
   {
-    collection: 'cases',
-    filePath: `./data/cases/cases_list.json`
+    collection: 'characters',
+    filePath: `./data/characters/Chen.json`
   }
 
   // Puoi aggiungere altri file qui
@@ -36,7 +36,7 @@ const seedDatabase = async () => {
       const collection = db.collection(item.collection);
       
       // Opzionale: Pulisce la vecchia versione del personaggio se esiste già
-      //await collection.deleteOne({ _id: jsonData._id || jsonData.meta.id });
+      await collection.deleteOne({ _id: jsonData._id || jsonData.meta.id });
 
       // 3. Inserisce il nuovo
       await collection.insertOne(jsonData);
