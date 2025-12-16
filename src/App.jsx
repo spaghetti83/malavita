@@ -6,14 +6,14 @@ import CasesList from './CasesList'
 
 const App = () => {
   const [casesList,setCasesList] = useState(null)
-  
+  const [caseSelected,setCaseSelected] = useState("")
 
-  const LoadCasesList = async () =>{
+  const loadCasesList = async () =>{
   
   try{
         const id = "master_cases_list"
         console.log(`asking for ID: ${id}`)
-        const response = await fetch(`http://localhost:5000/cases/${id}`,{
+        const response = await fetch(`http://localhost:5000/cases`,{
             method: 'GET',
             headers: {'Content-Type' : 'application/json'}
         })
@@ -28,16 +28,20 @@ const App = () => {
     
 
 }
+ const  selectCase = () => {
+  setCaseSelected("case_101")
+ }
  
 useEffect(()=>{
-  LoadCasesList()
+  loadCasesList()
+  selectCase()
 },[])
 
 
   return (
   <>
-  {casesList ? <CasesList cases={casesList}/> : <p>laoding component...</p>}
-  <Messageboard />
+  {casesList ? <CasesList cases={casesList} case_selected={caseSelected}/> : <p>laoding component...</p>}
+  <Messageboard cases={casesList} case_selected={caseSelected}/>
   </>
 )
 }

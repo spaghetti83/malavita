@@ -5,6 +5,7 @@
   "role": "Suspect",
   "archetype": "The Calculator",
   "is_hostile": true,
+  "case_id": "case_101",
   "avatar_asset": "/assets/avatars/case_101/chen_portrait.png",
   "narrative_constraints": {
     "strict_rules": [
@@ -99,9 +100,9 @@
           "pressure": -5
         },
         "decay_mechanic": {
-          "max_effective_uses": 5,
+          "max_effective_uses": 3,
           "current_uses": 0,
-          "exhausted_response_guide": "Sigh deeply. 'I cant take it anymore, stop it'"
+          "exhausted_response_guide": "Check watch visibly. Look bored. 'Are we done playing games? I have a business to run. Ask real questions or let me go.'"
         }
       },
       {
@@ -136,7 +137,14 @@
         ],
         "reaction_guide": "Pale face. Deny ownership strongly. Claim it is just trash found on the street or planted there.",
         "stat_mod": {
-          "pressure": 10
+          "pressure": 25
+        },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_burnt_receipt"
+          ],
+          "pressure_cap": 40,
+          "gate_response_guide": "Sneer. 'You found some trash in my chimney. So what? I burn my trash. It is not a crime.'"
         },
         "decay_mechanic": {
           "max_effective_uses": 2,
@@ -159,6 +167,14 @@
         "stat_mod": {
           "pressure": 15
         },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_burnt_receipt",
+            "ev_digital_receipt_cn"
+          ],
+          "pressure_cap": 65,
+          "gate_response_guide": "Laugh it off confidently. 'You are talking about cleaning supplies. Unless you can prove I bought them for a bomb, you are imagining things.'"
+        },
         "decay_mechanic": {
           "max_effective_uses": 3,
           "current_uses": 0,
@@ -179,6 +195,15 @@
         "stat_mod": {
           "pressure": 20
         },
+        "pressure_gate": {
+          "required_evidence_list": [
+            "ev_burnt_receipt",
+            "ev_digital_receipt_cn",
+            "ev_glitch_report"
+          ],
+          "pressure_cap": 100,
+          "gate_response_guide": "COMPLETE BREAKDOWN. Scream. 'Stop! Enough! I did it! Li Jun lied! I planted the bomb! I just wanted the shop!'"
+        },
         "decay_mechanic": {
           "max_effective_uses": 2,
           "current_uses": 0,
@@ -189,11 +214,20 @@
     "evidence_presentation": [
       {
         "evidence_id": "ev_burnt_receipt",
-        "found": true
+        "found": true,
+        "reaction_guide": "Impale. Deny ownership. Claim it is just trash found on the street.",
+        "stat_mod": {
+          "pressure": 25
+        }
       },
       {
         "evidence_id": "ev_glitch_report",
-        "found": true
+        "found": true,
+        "reaction_guide": "Panic. Accuse the technology of being faulty. Insist that Li Jun saw him.",
+        "stat_mod": {
+          "pressure": 50,
+          "force_state": "level_3_breakdown"
+        }
       }
     ]
   },

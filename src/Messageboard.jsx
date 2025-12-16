@@ -36,8 +36,9 @@ const handleMessage = (e) => {
 
 const loadCharacterList = async () => {
   console.log("loading character list...")
+  const caseSelected = props.cases
   try{
-      const response = await fetch('http://localhost:5000/characterList',{
+      const response = await fetch(`http://localhost:5000/characterList/${caseSelected}`,{
           method: 'GET',
           headers: {'Content-Type' : 'application/json'}
       })
@@ -52,7 +53,7 @@ useEffect(()=>{
 loadCharacterList()
 },[])
 const loadCharacter = async (id)=> {
-  loadCharacterList()
+  //loadCharacterList()
     try{
         console.log(`asking for ID: ${id}`)
         const response = await fetch(`http://localhost:5000/character/${id}`,{

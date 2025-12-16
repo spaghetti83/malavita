@@ -5,6 +5,7 @@
   "role": "Ally",
   "archetype": "The Brilliant Chemist",
   "is_hostile": false,
+  "case_id": "case_101",
   "avatar_asset": "/assets/avatars/case_101/silvia_moretti.png",
   "narrative_constraints": {
     "strict_rules": [

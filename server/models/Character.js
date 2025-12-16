@@ -13,7 +13,6 @@ const LinguisticsSchema = new Schema({
 }, { _id: false });
 
 // 2. Sottoschema: Meccanica di Decadimento (Decay Mechanic)
-// NOTA: Ho corretto "ax_effective_uses" in "max_effective_uses" come da JSON
 const DecayMechanicSchema = new Schema({
   max_effective_uses: { type: Number, default: 1 }, 
   current_uses: { type: Number, default: 0 },
@@ -38,7 +37,6 @@ const SemanticTriggerSchema = new Schema({
 }, { _id: false });
 
 // 4. Sottoschema: Presentazione Prove
-// Aggiornato per riflettere il JSON che contiene "found": true
 const EvidenceTriggerSchema = new Schema({
   evidence_id: { type: String, required: true },
   found: { type: Boolean, default: false }, // Aggiunto basandosi sul JSON
@@ -59,9 +57,13 @@ const CharacterSchema = new Schema({
   role: { type: String, enum: ['Suspect', 'Witness', 'Ally'], required: true },
   archetype: String,
   is_hostile: { type: Boolean, default: false },
+  
+  // NUOVO CAMPO: Case ID per associare il personaggio al caso specifico
+  case_id: { type: String, required: true }, 
+
   avatar_asset: String,
 
-  // NUOVO CAMPO: Mancava nel tuo schema originale, ma c'è nel JSON
+  // Constraints narrativi (System Instructions)
   narrative_constraints: {
     strict_rules: [{ type: String }]
   },

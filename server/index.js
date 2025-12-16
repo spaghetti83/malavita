@@ -5,6 +5,8 @@ const Character = require('./models/Character');
 const CaseModel = require('./models/Cases_list')
 const path = require('path')
 const fs = require('fs');
+const { stripVTControlCharacters } = require('util');
+
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
@@ -24,8 +26,10 @@ mongoose.connect(mongoURI)
 // --- ROTTE API ---
 
 
-app.get('/characterList', async (req,res) =>{
-    const folder = path.join( __dirname , './data/characters/')
+
+app.get('/characterList/
+    ', async (req,res) =>{
+     const folder = path.join( __dirname , './data/characters/')
     console.log(folder)
     fs.readdir(folder , (err,files)=>{
 
@@ -38,8 +42,25 @@ app.get('/characterList', async (req,res) =>{
     })
 })
 
-
 //LOAD SELECTED CHARACTER
+const characterListCheck = async (req,res,next) =>{
+    console.log("charater list middleware...")
+    const caseId = null
+    try {
+        const characters = await Character.find({'case_id': caseId})
+        if (!characters){
+            console.log("cases list not found:",characters)
+            next()
+        }else{
+            console.log("cases list correctly loadede")
+            res.send({ characterList: characters})
+        }
+        
+    }catch(error){
+        console.log(error)
+    }
+}
+
 app.get('/character/:id',async (req,res) =>{
     const id = req.params.id
     console.log("ID",req.params.id)
@@ -60,19 +81,40 @@ app.get('/character/:id',async (req,res) =>{
     }
 })
 
-app.get('/cases/:id', async (req,res) =>{
-    const id = req.params.id
-    console.log("id cases", id)
+const casesListCheck = async (req,res,next) =>{
+   
+    console.log("casesList middleware...")
     try {
-        const casesList = await CaseModel.findOne(({'id_file': id}))
+        const casesList = await CaseModel.findOne({'id_file': 'master_cases_list'})
         if (!casesList){
-            console.log("cases list not found!")
+            console.log("cases list not found:",casesList)
+            next()
+        }else{
+            console.log("cases list correctly loadede")
+            res.send({ cases_list: casesList})
         }
-        res.send({ cases_list: casesList})
+        
     }catch(error){
         console.log(error)
     }
+}
+
+app.get('/cases',casesListCheck, async (req,res) =>{
+    const folder = path.join( __dirname , './data/cases/')
+    console.log(folder)
+    
+    fs.readdir(folder , (err,files)=>{
+
+        if(err){
+            console.log("can't load the cases list, sorry!")
+            return res.send({message: "can't load the cases list, sorry!"})
+        }
+        console.log(files)
+        res.json(files)
+    })
+
 })
+
 
 app.post('/pressure', async (req, res) => {
     console.log("server ---> pressure function")

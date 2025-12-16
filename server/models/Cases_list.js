@@ -38,6 +38,6 @@ const CaseListSchema = new Schema({
   available_cases: [CaseEntrySchema]
 });
 
-const CaseList = mongoose.model('CaseList', CaseListSchema);
+const CaseList = mongoose.model('Case', CaseListSchema);
 
 module.exports = CaseList;

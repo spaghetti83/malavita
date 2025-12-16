@@ -12,6 +12,17 @@ const DATA_TO_SEED = [
   {
     collection: 'characters',
     filePath: `./data/characters/Chen.json`
+  }, {
+    collection: 'characters',
+    filePath: `./data/characters/LiJun.json`
+  },
+   {
+    collection: 'characters',
+    filePath: `./data/characters/MarioRossi.json`
+  },
+   {
+    collection: 'characters',
+    filePath: `./data/characters/SilviaMoretti.json`
   }
 
   // Puoi aggiungere altri file qui
@@ -36,7 +47,7 @@ const seedDatabase = async () => {
       const collection = db.collection(item.collection);
       
       // Opzionale: Pulisce la vecchia versione del personaggio se esiste già
-      await collection.deleteOne({ _id: jsonData._id || jsonData.meta.id });
+      await collection.deleteOne({ _id: jsonData._id || jsonData.id });
 
       // 3. Inserisce il nuovo
       await collection.insertOne(jsonData);

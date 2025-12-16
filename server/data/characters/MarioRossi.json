@@ -5,6 +5,7 @@
   "role": "Witness",
   "archetype": "The Desperate Shopkeeper",
   "is_hostile": false,
+  "case_id": "case_101",
   "avatar_asset": "/assets/avatars/case_101/mario_rossi.png",
   "narrative_constraints": {
     "strict_rules": [
