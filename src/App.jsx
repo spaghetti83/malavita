@@ -7,7 +7,7 @@ import CasesList from './CasesList'
 const App = () => {
   const [casesList,setCasesList] = useState(null)
   const [caseSelected,setCaseSelected] = useState("")
-
+  const [characterListFilter, setCharacterListFilter] = useState("case_101")
   const loadCasesList = async () =>{
   
   try{
@@ -41,7 +41,7 @@ useEffect(()=>{
   return (
   <>
   {casesList ? <CasesList cases={casesList} case_selected={caseSelected}/> : <p>laoding component...</p>}
-  <Messageboard cases={casesList} case_selected={caseSelected}/>
+  <Messageboard cases={casesList} case_selected={caseSelected} characterFilter={characterListFilter}/>
   </>
 )
 }

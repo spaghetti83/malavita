@@ -25,10 +25,26 @@ mongoose.connect(mongoURI)
 
 // --- ROTTE API ---
 
+const characterListCheck = async (req,res,next) =>{
+    console.log("charater list middleware...")
+   const filter = req.params.filter
+   console.log()
+    try {
+        const characters = await Character.find({'case_id': filter})
+        if (!characters){
+            console.log("cases list not found in the db")
+            next()
+        }else{
+            console.log("cases list correctly loadede")
+            res.send({ characterList: characters})
+        }
+        
+    }catch(error){
+        console.log(error)
+    }
+}
 
-
-app.get('/characterList/
-    ', async (req,res) =>{
+app.get('/characterList/:filter',characterListCheck, async (req,res) =>{
      const folder = path.join( __dirname , './data/characters/')
     console.log(folder)
     fs.readdir(folder , (err,files)=>{
@@ -43,23 +59,7 @@ app.get('/characterList/
 })
 
 //LOAD SELECTED CHARACTER
-const characterListCheck = async (req,res,next) =>{
-    console.log("charater list middleware...")
-    const caseId = null
-    try {
-        const characters = await Character.find({'case_id': caseId})
-        if (!characters){
-            console.log("cases list not found:",characters)
-            next()
-        }else{
-            console.log("cases list correctly loadede")
-            res.send({ characterList: characters})
-        }
-        
-    }catch(error){
-        console.log(error)
-    }
-}
+
 
 app.get('/character/:id',async (req,res) =>{
     const id = req.params.id

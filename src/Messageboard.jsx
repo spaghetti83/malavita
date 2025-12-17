@@ -6,7 +6,7 @@ import './App.css'
 const Messageboard = (props) =>   {
 
 const gptKey = import.meta.env.VITE_GPT_MINI_KEY;
-const [selelectedChar,setSelectedChar] = useState("char_chen_101")
+const [selelectedChar,setSelectedChar] = useState(null)
 const [message, setMessage] = useState("")
 const [chatLog,setChatLog] = useState("")
 const [chatHistory,setChatHistory] = useState([])
@@ -14,9 +14,8 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
-const [characterList, setCharacterList] = useState([])
+const [characterList, setCharacterList] = useState(null)
 const [pressureLimits,setPressureLimits] = useState([])
-const [evidences,setEvidences] = useState(["ev_burnt_receipt","ev_digital_receipt_cn","ev_glitch_report"])
 
 
 
@@ -36,9 +35,9 @@ const handleMessage = (e) => {
 
 const loadCharacterList = async () => {
   console.log("loading character list...")
-  const caseSelected = props.cases
+  const characterFilter = props.characterFilter
   try{
-      const response = await fetch(`http://localhost:5000/characterList/${caseSelected}`,{
+      const response = await fetch(`http://localhost:5000/characterList/${characterFilter}`,{
           method: 'GET',
           headers: {'Content-Type' : 'application/json'}
       })
@@ -53,7 +52,8 @@ useEffect(()=>{
 loadCharacterList()
 },[])
 const loadCharacter = async (id)=> {
-  //loadCharacterList()
+  setSelectedChar(id)
+  console.log("LOADING CHARACTER...")
     try{
         console.log(`asking for ID: ${id}`)
         const response = await fetch(`http://localhost:5000/character/${id}`,{
@@ -91,7 +91,7 @@ const semanticEngine = async (message) => {
     
     const stressMod = JSON.parse(evaluation.choices[0].message.content)
     console.log("STRESS",stressMod)
-    //setStressModifier(stressMod.pressure_modifiers)
+    setStressModifier(stressMod.pressure_modifiers)
     if(stressMod.results.length !== 0){
       console.log("adding pressure...",stressMod.pressure_modifiers )
       addPressure(stressMod)
@@ -117,13 +117,7 @@ const addPressure = async (pressure) => {
   console.log("checking valure of pressure:", pressure)
   const pressureObj = pressure
   console.log("adding pressure to: ",characterLoaded.name)
-  /*
-  console.log("stress value: ", characterLoaded.state_metrics.pressure_level,"+",pressureVal)
-  const newPressure = characterLoaded.state_metrics.pressure_level + pressureVal
-  console.log("new pressure level",newPressure) 
-  console.log("Presure Cap",pressureLimits)
-  console.log("stress evaluetor response",pressureVal)  
-  */
+ 
     try{
         const response = await fetch('http://localhost:5000/pressure',{
             method : "POST",
@@ -205,13 +199,16 @@ useEffect(()=>{
       >
         send
       </button>
-      <p>
-        <button onClick={() =>  loadCharacter("char_chen_101")}>carica Chen</button>
-      </p>
-
-      {characterList ? characterList.map( (e,index) => (
-        <button key={index}>{e}</button>
-      )):<p>loading characters list...</p>}
+      
+        <div>
+          {characterList ? 
+          characterList.characterList.map( (e,index) => (
+            <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
+            ))
+           : <p>loading characters...</p>
+          }
+        </div>
+     
 
   
     </>
