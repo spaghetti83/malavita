@@ -26,6 +26,10 @@ const SemanticTriggerSchema = new Schema({
   examples: [{ type: String }],
   reaction_guide: String,
   
+  unlocks: {
+    characters: [{ type: String }], // ID dei personaggi da sbloccare (es: ["char_lijun_102"])
+    evidence: [{ type: String }]    // ID delle prove da sbloccare (es: ["ev_pistola"])
+  },
   // Stat Modificatori
   stat_mod: {
     pressure: { type: Number, default: 0 },

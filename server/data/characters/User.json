@@ -1,0 +1,28 @@
+{
+  "_id": "user_1234",
+  "username": "Detective_Dante",
+  "email": "dante@malavita.test",
+  "detective_rank": "ROOKIE",
+  "case_log": [
+    {
+      "case_id": "case_101",
+      "status": "UNLOCKED",
+      "score": 0,
+      "completed_at": null
+    },
+    {
+      "case_id": "case_102",
+      "status": "LOCKED",
+      "score": 0,
+      "completed_at": null
+    },
+    {
+      "case_id": "case_103",
+      "status": "LOCKED",
+      "score": 0,
+      "completed_at": null
+    }
+  ],
+  "created_at": { "$date": "2023-10-27T10:00:00Z" },
+  "last_login": { "$date": "2023-10-27T10:00:00Z" }
+}

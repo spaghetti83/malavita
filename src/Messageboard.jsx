@@ -14,10 +14,10 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
-const [characterList, setCharacterList] = useState(null)
+//const [characterList, setCharacterList] = useState(null)
 const [pressureLimits,setPressureLimits] = useState([])
-
-
+const characterList = JSON.parse(props.characterFilter)
+console.log("parsed character list", characterList)
 
 const client = new OpenAI({
   apiKey: gptKey,
@@ -32,7 +32,7 @@ const handleMessage = (e) => {
     setMessage("")
   } 
 }
-
+/*
 const loadCharacterList = async () => {
   console.log("loading character list...")
   const characterFilter = props.characterFilter
@@ -51,6 +51,7 @@ const loadCharacterList = async () => {
 useEffect(()=>{
 loadCharacterList()
 },[])
+*/
 const loadCharacter = async (id)=> {
   setSelectedChar(id)
   console.log("LOADING CHARACTER...")
@@ -201,8 +202,8 @@ useEffect(()=>{
       </button>
       
         <div>
-          {characterList ? 
-          characterList.characterList.map( (e,index) => (
+        
+          { characterList ? characterList.characterList.map( (e,index) => (
             <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
             ))
            : <p>loading characters...</p>
