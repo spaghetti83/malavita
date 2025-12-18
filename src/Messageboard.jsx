@@ -79,7 +79,7 @@ const loadCharacter = async (id)=> {
 
 const semanticEngine = async (message) => {
   console.log("semantic evaluation started...")
-  //setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
+  setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
   try{
   const response = await fetch('http://localhost:5000/semantic-evaluetor',{
     method : 'POST',
@@ -99,9 +99,9 @@ const semanticEngine = async (message) => {
     //console.log("STRESS",stressMod)
     //setStressModifier(stressMod.pressure_modifiers)
     
-      console.log("going to start npcChat with this message:",data.message.content)
+      console.log("going to start npcChat with this message:",data)
       setChatLog(data.message.content)
-    
+      data.pressure ? setStressLevel(data.pressure) : setStressLevel(stressLevel)
     
   }catch(error){
     console.log(error)
@@ -139,6 +139,7 @@ const addPressure = async (pressure) => {
 }
 }
 */
+/*
 const npcChat = async (message) =>{
     console.log("npcChat func. starting...")
     console.log("message: ",message)
@@ -173,7 +174,7 @@ try{
 }
 
 }
-
+*/
 useEffect(()=>{
     //CHAT HISTORY UPDATE
    // chatHistory.map(e => console.log("History: ",e.content))

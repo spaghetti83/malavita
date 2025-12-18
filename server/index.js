@@ -61,7 +61,7 @@ const semanticEngine = async (req,res,next)=>{
             console.log("going to start npcChat with this message:", message)
             //npcChat(message) answer to npcChat
             req.isAlterated = false
-            req.resp = message
+            req.resp = evaluationResponse
             next()
         }
 
@@ -70,25 +70,26 @@ const semanticEngine = async (req,res,next)=>{
     }
 }
 const addPressure = async (req, res, next) => {
-    console.log("server ---> pressure function")    
+    console.log("server ---> pressure function") 
+    const charId = JSON.parse(req.body.character)
+    console.log(charId._id) 
     if(req.isAlterated){
     try{
-        const char = await Character.findOne({'_id' : 'char_chen_101'})
+        const char = await Character.findOne({'_id' : charId._id})
         if(!char){
             console.log("no character found!")
             return res.status(404).send("character not found!");
         }
         console.log("previus level of stress", char.state_metrics.pressure_level)
         console.log(req.resp)
-        console.log()
         let pressureAccumulated = 0
+        console.log("length results",req.resp.results)
         char.interaction_triggers.semantic_triggers.map((e) => {
-            ///con .some se i concept_id sono due li somma entrambi. CAMBIARE!!
-            //if(req.body.semantic_triggers.some( id => e.concept_id === id)){
+           
             req.resp.results.forEach((result) => {
                 if (e.concept_id === result.triggered_ids) {
                     if (e.decay_mechanic.current_uses < e.decay_mechanic.max_effective_uses) {
-                        e.decay_mechanic.current_uses = e.decay_mechanic.current_uses + 1
+                        e.decay_mechanic.current_uses =  e.decay_mechanic.current_uses + 1
                         console.log(e.concept_id, "used", e.decay_mechanic.current_uses, "time(s) of ", e.decay_mechanic.max_effective_uses)
                         pressureAccumulated = pressureAccumulated + result.pressure_modifiers
                         console.log("adding",result.pressure_modifiers, "of",pressureAccumulated )
@@ -102,8 +103,11 @@ const addPressure = async (req, res, next) => {
         })
         console.log("total pressure accomulated", pressureAccumulated)
         char.state_metrics.pressure_level = char.state_metrics.pressure_level + pressureAccumulated
+        req.pressure = char.state_metrics.pressure_level
         await char.save()
-        res.send({message: "pressure correctly saved"})
+        //res.send({message: "pressure correctly saved"})
+        console.log("pressure correctly saved")
+        next()
     }catch(error){
         console.error(error);
         res.status(500).send('Errore: ' + error.message);
@@ -141,14 +145,8 @@ app.post('/semantic-evaluetor',semanticEngine,addPressure, async (req,res) => {
     top_p: 0.95
     
     });
-        if (req.isAlterated) {
-            res.send(req.resp)
-        } else {
-            console.log("preparing the answare for the frontend...")
-            console.log(response)
-            res.send({ status: "NOT ALTERATED", message: response.choices[0].message })
-        }
    
+    res.send({message: response.choices[0].message, pressure: req.pressure})
    
 
     
