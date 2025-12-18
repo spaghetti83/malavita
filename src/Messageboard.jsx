@@ -17,7 +17,7 @@ const [stressModifier,setStressModifier] = useState([])
 //const [characterList, setCharacterList] = useState(null)
 const [pressureLimits,setPressureLimits] = useState([])
 const characterList = JSON.parse(props.characterFilter)
-console.log("parsed character list", characterList)
+
 
 const client = new OpenAI({
   apiKey: gptKey,
@@ -79,29 +79,29 @@ const loadCharacter = async (id)=> {
 
 const semanticEngine = async (message) => {
   console.log("semantic evaluation started...")
-  setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
+  //setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
   try{
-  const evaluation =  await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-        {role: "system", content: semanticEvaluetor},
-       {role: "user", content: message}
-    ],
-    temperature: 0.0
-    });
+  const response = await fetch('http://localhost:5000/semantic-evaluetor',{
+    method : 'POST',
+    headers : {'Content-Type' : 'application/json'},
+    body : JSON.stringify({
+      semantic_evaluetor : semanticEvaluetor,
+      message : message,
+      character : JSON.stringify(characterLoaded),
+      chat_history : JSON.stringify(chatHistory)
+    })
+  })
+    console.log("waiting an answer from server..")
+    const data = await response.json()
+    console.log("semantic evaluetor DATA",data)
     
-    const stressMod = JSON.parse(evaluation.choices[0].message.content)
-    console.log("STRESS",stressMod)
-    setStressModifier(stressMod.pressure_modifiers)
-    if(stressMod.results.length !== 0){
-      console.log("adding pressure...",stressMod.pressure_modifiers )
-      addPressure(stressMod)
-      
-    }else{
-      console.log("no changes in pressure")
-      console.log("going to start npcChat with this message:",message)
-      npcChat(message)
-    }
+    
+    //console.log("STRESS",stressMod)
+    //setStressModifier(stressMod.pressure_modifiers)
+    
+      console.log("going to start npcChat with this message:",data.message.content)
+      setChatLog(data.message.content)
+    
     
   }catch(error){
     console.log(error)
@@ -113,7 +113,7 @@ const semanticEngine = async (message) => {
 useEffect(()=>{
 console.log("suspect stress level",stressLevel)
 },[stressLevel,characterLoaded,stressModifier])
-
+/*
 const addPressure = async (pressure) => {
   console.log("checking valure of pressure:", pressure)
   const pressureObj = pressure
@@ -138,7 +138,7 @@ const addPressure = async (pressure) => {
     console.log(error)
 }
 }
-
+*/
 const npcChat = async (message) =>{
     console.log("npcChat func. starting...")
     console.log("message: ",message)
