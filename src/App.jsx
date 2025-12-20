@@ -9,7 +9,10 @@ const App = () => {
   const [session,setSession] = useState(null)
   const [casesList,setCasesList] = useState(null)
   const [caseSelected,setCaseSelected] = useState(null)
-  const [characterList, setCharacterList] = useState([])
+  const [charactersActive, setCharactersActive] = useState([])
+  //VISUALIZZATION
+  const [currentView,setCurrentView] = useState('menu')
+
 
 //LOAD SESSION
 const loadSession = async () =>{
@@ -71,15 +74,18 @@ const loadCharacterList = async (activeCase) => {
       })
       const data = await response.json()
       console.log("character list loaded!",data)
+      let unlockedChar = []
       data.characterList.map( (e) => {
-        
         if(e.status === "UNLOCKED" ){
           console.log("isUnlocked!",e._id)
-          setCharacterList(prev => [...prev, e] )
+          unlockedChar.push(e)
         }
       })
+      setCharactersActive(unlockedChar)
+      return unlockedChar
       //console.log("UNLOCKED", unlockedCharacters)
       ////setCharacterList(JSON.stringify(data))
+      
   }catch(err){
     console.log(err)
   }
@@ -99,8 +105,10 @@ const gameMaster = async () => {
    
     const sessionData = await loadSession()
     loadCasesList()
-    console.log("this is session =>",sessionData.activeCase.caseId)
-    loadCharacterList(sessionData.activeCase.caseId)
+    const activeChar = await loadCharacterList(sessionData.activeCase.caseId)
+    //const activeChar = await loadCharacterList(sessionData.activeCase.caseId)
+    console.log("ACTIVE CHARs", activeChar)
+
 }
 useEffect(()=>{
   gameMaster()
@@ -109,21 +117,21 @@ useEffect(()=>{
 
 
 
-useEffect(()=>{
-loadCharacterList()
-},[])
-
-
   return (
+     currentView === 'menu' ? (
   <>
-  <div className='header'>
+  <div className='header' onClick={()=> setCurrentView("message-board")}>
   {casesList ? <CasesList cases={casesList} case_selected={caseSelected}/> : <p>laoding component...</p>} 
   {<p className='active-case'>Active case: <span> {caseSelected}</span></p>}
   </div>
-  <Messageboard cases={casesList} case_selected={caseSelected} characterFilter={characterList}/>
-  
+  </> 
+) : (
+  <>
+  {charactersActive ? <Messageboard cases={casesList} case_selected={caseSelected} characterFilter={charactersActive}/>: <p>laoding component...</p>} 
   </>
 )
+    
+  )
 }
 
 

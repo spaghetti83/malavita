@@ -5,7 +5,7 @@ import './App.css'
 
 const Messageboard =  (props) =>   {
 
-
+//DATA
 const [selelectedChar,setSelectedChar] = useState(null)
 const [message, setMessage] = useState("")
 const [chatLog,setChatLog] = useState("")
@@ -14,16 +14,12 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
-//const [characterList, setCharacterList] = useState(props.characterFilter)
 const [pressureLimits,setPressureLimits] = useState([])
-//const characterList =  props.characterFilter //JSON.parse(props.characterFilter)
-//console.log("form Messageboard",characterList ? characterList : "not loadede yet")
-/*
-const client = new OpenAI({
-  apiKey: gptKey,
-  dangerouslyAllowBrowser: true
-});
-*/
+const characterList =  props.characterFilter 
+const [activeTab,setActiveTab] = useState("character")
+
+
+
 const handleMessage = (e) => {
   
   setMessage(e.target.value)
@@ -112,68 +108,8 @@ const semanticEngine = async (message) => {
 useEffect(()=>{
 console.log("suspect stress level",stressLevel)
 },[stressLevel,characterLoaded,stressModifier])
-/*
-const addPressure = async (pressure) => {
-  console.log("checking valure of pressure:", pressure)
-  const pressureObj = pressure
-  console.log("adding pressure to: ",characterLoaded.name)
- 
-    try{
-        const response = await fetch('http://localhost:5000/pressure',{
-            method : "POST",
-            headers: { 'Content-Type' : 'application/json'},
-            body: JSON.stringify({
-              id: characterLoaded.id,
-              semantic_triggers: pressure
-            })
-        })
-        const data = await response.json()
-        console.log("pressure level updated correctly")
-        console.log(data.message)
-        loadCharacter(selelectedChar) 
-        npcChat(message)
-}catch(error){
-  console.log("pressure level NOT updated")
-    console.log(error)
-}
-}
-*/
-/*
-const npcChat = async (message) =>{
-    console.log("npcChat func. starting...")
-    console.log("message: ",message)
-    
-try{
-    
-    console.log("loading character...")
-    const character = characterLoaded
-    console.log("DATA: ",character)
-    
-    setChatLog(<span style={{ fontStyle: 'italic'}}>{character.name} is thinking... </span>)
-    const response =  await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-        {role: "system", content: JSON.stringify(character)},
-       ...chatHistory, 
-       {role: "user", content: message}
-    ],
-    max_tokens : 80,
-    temperature: 0.7,
-    top_p: 0.95
-    
-    });
-    console.log("connected.")
-    setChatHistory(prev => [...prev,{role: "user", content: message}])
-    console.log("response from NPC: ",response.choices[0].message.content) 
-    setChatHistory((prevItems) => [...prevItems,{role: "assistant", content: response.choices[0].message.content}])
-    setChatLog(response.choices[0].message.content)
-    
-}catch(err){
-    console.log("THIS IS ERROR",err)
-}
 
-}
-*/
+
 useEffect(()=>{
     //CHAT HISTORY UPDATE
    // chatHistory.map(e => console.log("History: ",e.content))
@@ -181,7 +117,11 @@ useEffect(()=>{
 
 
   return (
-    <>
+      <>
+      <div>
+        <button onClick={()=> setActiveTab("characters")}>Character</button>
+        <button onClick={()=> setActiveTab("team")}>Team</button>
+      </div>
       <div>
         {chatLog}
       </div>
@@ -201,18 +141,30 @@ useEffect(()=>{
         send
       </button>
       
-        <div>
-        
+      {activeTab === "team" ? (
+        <div className="characters-btn">
           { characterList ? characterList.map( (e,index) => (
+            
+            e.role === "Ally" && (
             <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
+            )
             ))
            : <p>loading characters...</p>
           }
         </div>
-     
-
-  
-    </>
+      ):(
+        <div className="characters-btn">
+          { characterList ? characterList.map( (e,index) => (
+            e.role !== "Ally" && (
+            <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
+            )
+          ))
+           : <p>loading characters...</p>
+          }
+        </div>
+      )
+      }
+          </>
   )
 }
 
