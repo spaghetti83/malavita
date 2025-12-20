@@ -24,7 +24,7 @@ mongoose.connect(mongoURI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ Error DB:', err));
 
-// --- ROTTE API ---
+// --- ROUTS API ---
 
 const semanticEngine = async (req,res,next)=>{
     console.log("starting to evaluate from the server...")
@@ -270,6 +270,7 @@ app.post('/session',async (req,res)=> {
              }
         })
         await newSession.save() 
+        
         res.send({message: "new session saved correctly", session: newSession})
         
     }
