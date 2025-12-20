@@ -18,7 +18,7 @@ const DATA_TO_SEED = [
   },
    {
     collection: 'characters',
-    filePath: `./data/characters/MarioRossi.json`
+    filePath: `./data/characters/LinBo.json`
   },
    {
     collection: 'characters',

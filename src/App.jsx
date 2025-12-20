@@ -11,7 +11,43 @@ const App = () => {
   const [characterListFilter, setCharacterListFilter] = useState("case_101")
   const [characterList, setCharacterList] = useState(null)
 
-  const loadCasesList = async () =>{
+const session = async () =>{
+  console.log("looking for a session...")
+    //implement the logic
+    const user = "user1"
+    const userId = "1234@user.com"
+    const sessionExist = true 
+    const userObj = {user: user, id: userId, session: sessionExist}
+    try{
+    const response = await fetch('http://localhost:5000/session/',{
+      method: 'POST',
+      headers : { 'Content-Type' : 'application/json'},
+      body: JSON.stringify({user: user, id: userId, session: sessionExist})
+    })
+    const data = await response.json()
+    console.log("session:" ,data.message)
+  }catch(error){
+    console.log(error)
+  }
+}
+const gameMaseter = (session) => {
+    //1. call an api to mongo to find the user session
+
+    //2.  get results to see unlocked cases
+
+    //3. if NO CASES => create the first character by default
+
+    /*4. if YES => you will have all the character already created filterd by unlocked cases.
+         if the user select one of the unlocked cases, it filters all the character by cases.
+         characters will be created on mongo every time the character is unlocked (mentioned).
+         the method in witch the char will be mentioned is to define => by user? by NPC?
+    */
+}
+useEffect(()=>{
+  session()
+},[])
+
+  const loadCasesList = async () =>{  
   
   try{
         const id = "master_cases_list"

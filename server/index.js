@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Character = require('./models/Character');
 const CaseModel = require('./models/Cases_list')
+const Session = require('./models/Session')
 const path = require('path')
 const fs = require('fs');
 const { stripVTControlCharacters } = require('util');
@@ -160,7 +161,6 @@ app.post('/semantic-evaluetor',semanticEngine,addPressure, async (req,res) => {
 
 })
 
-
 const characterListCheck = async (req,res,next) =>{
     console.log("charater list middleware...")
    const filter = req.params.filter
@@ -195,8 +195,6 @@ app.get('/characterList/:filter',characterListCheck, async (req,res) =>{
 })
 
 //LOAD SELECTED CHARACTER
-
-
 app.get('/character/:id',async (req,res) =>{
     const id = req.params.id
     console.log("ID",req.params.id)
@@ -252,25 +250,31 @@ app.get('/cases',casesListCheck, async (req,res) =>{
 })
 
 
+app.post('/session',async (req,res)=> {
+    console.log("looking for a session...")
+    console.log(req.body)
+    const session = await Session.findOne({'userId': req.body.id})
 
-app.get('/getKeywords', async (req, res) => {
-    try{
-        const char = await Character.findOne({'meta.id' : 'char_chen_101'})
-        if(!char){
-            console.log("no character found!")
-            return res.status(404).send("Personaggio non trovato nel database!");
-        }
-        const keywords = char.interaction_triggers.keywords
-        console.log("keywords", keywords)
-        res.send({message: keywords})
-    }catch(error){
-        console.error(error);
-        res.status(500).send('Errore: ' + error.message);
+    if(session){
+        console.log("session found")
+        res.send({message: "session found", session: session})
+    }else{
+        console.log("no session found, creating one....")
+        const newSession = new Session({
+        user : req.body.user,
+        userId : req.body.id,
+        activeCase: {
+            caseId :"case_101", 
+            caseTitle : "Ashes and Envy",
+            startedAt : new Date()
+             }
+        })
+        await newSession.save() 
+        res.send({message: "new session saved correctly", session: newSession})
+        
     }
-    
-});
-
-
+        
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server attivo su porta ${PORT}`));
