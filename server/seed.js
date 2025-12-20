@@ -23,6 +23,10 @@ const DATA_TO_SEED = [
    {
     collection: 'characters',
     filePath: `./data/characters/SilviaMoretti.json`
+  },
+   {
+    collection: 'characters',
+    filePath: `./data/characters/WRONG.json`
   }
 
   // Puoi aggiungere altri file qui

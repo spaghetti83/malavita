@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import './App.css'
 
 
-const Messageboard = (props) =>   {
+const Messageboard =  (props) =>   {
 
-const gptKey = import.meta.env.VITE_GPT_MINI_KEY;
+
 const [selelectedChar,setSelectedChar] = useState(null)
 const [message, setMessage] = useState("")
 const [chatLog,setChatLog] = useState("")
@@ -14,16 +14,16 @@ const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
-//const [characterList, setCharacterList] = useState(null)
+//const [characterList, setCharacterList] = useState(props.characterFilter)
 const [pressureLimits,setPressureLimits] = useState([])
-const characterList = JSON.parse(props.characterFilter)
-
-
+//const characterList =  props.characterFilter //JSON.parse(props.characterFilter)
+//console.log("form Messageboard",characterList ? characterList : "not loadede yet")
+/*
 const client = new OpenAI({
   apiKey: gptKey,
   dangerouslyAllowBrowser: true
 });
-
+*/
 const handleMessage = (e) => {
   
   setMessage(e.target.value)
@@ -75,7 +75,6 @@ const loadCharacter = async (id)=> {
         console.log(error)
     }
 }
-
 
 const semanticEngine = async (message) => {
   console.log("semantic evaluation started...")
@@ -204,7 +203,7 @@ useEffect(()=>{
       
         <div>
         
-          { characterList ? characterList.characterList.map( (e,index) => (
+          { characterList ? characterList.map( (e,index) => (
             <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
             ))
            : <p>loading characters...</p>

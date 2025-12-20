@@ -57,12 +57,18 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-.cases-list-container {
+.header {
   position: fixed;
   top: 10px;
   left: 0px;
   width: 100%;
   align-items: center;
+}
+.active-case {
+  text-align: right;
+  padding: 10px;
+  background-color: #242424;
+  width: auto;
 }
 ul{
   border: #81fa71 0.1px solid;

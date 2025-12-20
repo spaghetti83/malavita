@@ -1,12 +1,11 @@
 {
-  "_id": "char_chen_101",
-  "status" : "LOCKED",
-  "name": "Chen Wei",
+  "_id": "WRONG_102",
+  "name": "",
   "codename": "The Fox",
   "role": "Suspect",
   "archetype": "The Calculator",
   "is_hostile": true,
-  "case_id": "case_101",
+  "case_id": "case_102",
   "avatar_asset": "/assets/avatars/case_101/chen_portrait.png",
   "narrative_constraints": {
     "strict_rules": [

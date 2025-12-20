@@ -270,7 +270,7 @@ app.post('/session',async (req,res)=> {
              }
         })
         await newSession.save() 
-        
+
         res.send({message: "new session saved correctly", session: newSession})
         
     }

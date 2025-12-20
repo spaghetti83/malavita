@@ -1,16 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// 1. Sottoschema: Linguistica
-const LinguisticsSchema = new Schema({
-  primary_language: { type: String, required: true },
-  known_languages: [{ type: String }], // Array di stringhe
-  proficiency: { type: Map, of: String }, // Gestisce chiavi dinamiche come "it", "zh"
-  unknown_language_reaction: {
-    behavior: String,
-    response_guide: String
-  }
-}, { _id: false });
+
 
 // 2. Sottoschema: Meccanica di Decadimento (Decay Mechanic)
 const DecayMechanicSchema = new Schema({
@@ -53,6 +44,11 @@ const EvidenceTriggerSchema = new Schema({
 
 // 5. Schema Principale Character
 const CharacterSchema = new Schema({
+  status: {
+        type: String,
+        enum: ['LOCKED', 'UNLOCKED'],
+        default: 'LOCKED' // Di default un personaggio è nascosto
+    },
   // _id gestito manualmente come stringa ("char_chen_101")
   _id: { type: String, required: true }, 
   
@@ -72,7 +68,6 @@ const CharacterSchema = new Schema({
     strict_rules: [{ type: String }]
   },
 
-  linguistics: LinguisticsSchema,
 
   profile: {
     background: String,
