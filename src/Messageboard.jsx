@@ -118,18 +118,21 @@ useEffect(()=>{
 
   return (
       <>
-      <div>
-        <button onClick={()=> setActiveTab("characters")}>Character</button>
-        <button onClick={()=> setActiveTab("team")}>Team</button>
+      <div className="mb-container">
+      <div className="mb-container-buttons">
+        <button className="mb-character-btn" onClick={()=> setActiveTab("characters")}>CHARACTER</button>
+        <button className="mb-character-btn" onClick={()=> setActiveTab("team")}>TEAM</button>
       </div>
-      <div>
+      <div className="mb-chatlog-container">
+      <div className="mb-chatlog">
         {chatLog}
       </div>
-      <p>Stress level {stressLevel}</p>
-      
+      <p className="mb-stree-level">Stress level {stressLevel}</p>
+      <div className="mb-input-btn-container">
       <input id="text" type="text" value={message} placeholder="ask something..." onChange={handleMessage} onKeyDown={handleMessage} autoComplete="off"/>
       <button
         id="send"
+        className="mb-send"
         onClick={() => {
           //npcChat(message);
           semanticEngine(message)
@@ -138,32 +141,44 @@ useEffect(()=>{
         }}
         
       >
-        send
+        ENTER
       </button>
-      
+      </div>
+      </div>
       {activeTab === "team" ? (
         <div className="characters-btn">
+          <ul className="mb-character-list-container">
           { characterList ? characterList.map( (e,index) => (
             
             e.role === "Ally" && (
-            <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
+            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span class="material-symbols-outlined">
+groups
+</span></li>
             )
+          
             ))
+            
            : <p>loading characters...</p>
           }
+            </ul>
         </div>
       ):(
         <div className="characters-btn">
+          <ul className="mb-character-list-container">
           { characterList ? characterList.map( (e,index) => (
             e.role !== "Ally" && (
-            <button key={index} onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}</button>
+            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span class="material-symbols-outlined">
+local_police
+</span></li>
             )
           ))
            : <p>loading characters...</p>
           }
+          </ul>
         </div>
       )
       }
+      </div>
           </>
   )
 }
