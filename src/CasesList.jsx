@@ -7,7 +7,7 @@ const CasesList = (props) => {
         <div className="case-list-container" >
             <ul style={{listStyle: "none", padding: 0, margin: 0,cursor: "pointer"}}>
             {props.cases.cases_list.available_cases.map((e,index) => (
-               e.status === "UNLOCKED" ? <li  key={index}>{e.display_title}<span class="material-symbols-outlined">
+               e.status === "UNLOCKED" ? <li  key={index}>{e.display_title}<span className="material-icons">
 arrow_forward_ios
 </span></li> : <li key={index}>{e.status}</li>
             )

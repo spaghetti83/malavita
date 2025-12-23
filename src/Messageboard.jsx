@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { useState, useEffect } from "react";
-import './App.css'
+import './Messageboard.css'
 
 
 const Messageboard =  (props) =>   {
@@ -17,7 +17,6 @@ const [stressModifier,setStressModifier] = useState([])
 const [pressureLimits,setPressureLimits] = useState([])
 const characterList =  props.characterFilter 
 const [activeTab,setActiveTab] = useState("character")
-
 
 
 const handleMessage = (e) => {
@@ -60,7 +59,7 @@ const loadCharacter = async (id)=> {
         const data = await response.json() 
         console.log(data)
         setCharacterLoaded(data.character)
-        setChatLog(`Speaking with: ${data.character.name},`)
+        setChatLog(`Speaking with: ${data.character.name}`)
         setStressLevel(data.character.state_metrics.pressure_level)
         setPressureLimits(data.character.interaction_triggers.semantic_triggers)
         setSemanticEvaluetor(JSON.stringify({triggered_concepts: data.character.interaction_triggers.semantic_triggers, prompt: data.prompt}))
@@ -86,24 +85,30 @@ const semanticEngine = async (message) => {
       chat_history : JSON.stringify(chatHistory)
     })
   })
+    
+   
+    console.log("no errors found...")
     console.log("waiting an answer from server..")
     const data = await response.json()
     console.log("semantic evaluetor DATA",data)
-    
-    
-    //console.log("STRESS",stressMod)
-    //setStressModifier(stressMod.pressure_modifiers)
-    
-      console.log("going to start npcChat with this message:",data)
-      setChatLog(data.message.content)
-      data.pressure ? setStressLevel(data.pressure) : setStressLevel(stressLevel)
-    
+    console.log("going to start npcChat with this message:",data)
+    setChatLog(data.message.content)
+    data.pressure ? setStressLevel(data.pressure) : setStressLevel(stressLevel)
+    //return  data
   }catch(error){
-    console.log(error)
+    console.log("ERROR found:", error)
+    
+    semanticEvaluetorErrorHandler(message)
   }
 
 
 }
+
+const semanticEvaluetorErrorHandler = async (message) => {
+///TO DEFINE
+}
+
+
 
 useEffect(()=>{
 console.log("suspect stress level",stressLevel)
@@ -151,7 +156,7 @@ useEffect(()=>{
           { characterList ? characterList.map( (e,index) => (
             
             e.role === "Ally" && (
-            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span class="material-symbols-outlined">
+            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}<span className="material-icons">
 groups
 </span></li>
             )
@@ -167,7 +172,7 @@ groups
           <ul className="mb-character-list-container">
           { characterList ? characterList.map( (e,index) => (
             e.role !== "Ally" && (
-            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span class="material-symbols-outlined">
+            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span className="material-icons">
 local_police
 </span></li>
             )

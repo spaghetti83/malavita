@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-
+/*@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 :root {
   /* Sfondo e Base */
   --terminal-bg: #050505;              /* Nero profondo */
@@ -21,7 +20,11 @@
   --terminal-glow: rgba(34, 197, 94, 0.5);   /* Bagliore dei fosfori */
   --terminal-scanline: rgba(34, 197, 94, 0.03); /* Colore della riga di scansione */
 
- 
+  --font-l: 1.50rem;
+  --font-m: 1.40rem;
+  --font-s: 1rem;
+  
+  --border-default: solid 0.5px var(--terminal-green-bright)
   
 }
 #root{
@@ -40,19 +43,19 @@ body {
   color: var(--terminal-green);
   background-color: var(--terminal-bg);
   display: block;
-  border: 1px solid red;
   margin: 10px;
   padding: 0px;
-  font-family: "Share Tech Mono", monospace;
-  
+  font-family: 'VT323', monospace;
   align-items: center;
+  font-size: 30px;
 }
 .app-container {
   background-color: var(--terminal-bg);
   box-sizing: border-box;
   width: 100%;
-  border: solid green;
-  font-family: "Share Tech Mono", monospace;
+  
+  font-family: 'VT323', monospace;
+  max-width: 600px;
 }
 
 li{
@@ -61,7 +64,7 @@ li{
   align-items: center;
   background-color: var(--terminal-bg);
   border: var(--terminal-bg);
-  font-size: 32px;
+  font-size: var(--font-default);
   padding-bottom: 8px;
   padding: 0px 12px;
   height: 100%;
@@ -102,7 +105,7 @@ li:hover{
   align-items: left;
   background-color: var(--terminal-bg);
   border: var(--terminal-green);
-  font-size: 32px;
+  font-size: var(--font-default);
   padding-bottom: 8px;
   height: 100%;
   color: var(--terminal-green);
@@ -117,20 +120,42 @@ li:hover{
   display: block;
   justify-items: center;
 }
+.mb-header-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--terminal-bg-soft);
+  height: 60px;
+  margin-bottom: 10px;
+  align-items: center;
+  padding: 5px;
+  border: var(--border-default)
+}
+.mb-active-case{
+  font-size: var(--font-m)
+}
 input{
   background-color: var(--terminal-bg-soft);
   border: none;
   width: 100%;
   color: var(--terminal-green);
   caret-color: var(--terminal-green);
+  outline: none;
 }
-.mb-send{
+.mb-send {
   width: 100px;
   margin-left: 10px;
   background-color: var(--terminal-green);
   color: var(--terminal-bg);
   border: none;
 }
+
+.mb-back-btn{
+  width: 100px;
+  background-color: var(--terminal-bg-soft);
+  color: var(--terminal-green);
+  border: solid 0.5px var(--terminal-green);
+}
+  
 .mb-input-btn-container{
  display: flex;
 

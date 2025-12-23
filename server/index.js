@@ -141,18 +141,19 @@ app.post('/semantic-evaluetor',semanticEngine,addPressure, async (req,res) => {
         ...history,
        {role: "user", content: message}
     ],
-    max_tokens : 80,
+    max_tokens : 120,
     temperature: 0.7,
     top_p: 0.95
     
     });
-   
+    
     res.send({message: response.choices[0].message, pressure: req.pressure})
    
 
     
     } catch (error) {
         console.log(error)
+        res.status(500).json({error: 500})
     }
 
 

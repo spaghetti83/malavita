@@ -120,19 +120,28 @@ useEffect(()=>{
   return (
    
      currentView === 'menu' ? (
-  <>
+
   <div className='app-container'>
-  {<p className='active-case'>Active case: <span> {caseSelected}</span></p>}
+  
   <div onClick={()=> setCurrentView("message-board")}>
   {casesList ? <CasesList cases={casesList} case_selected={caseSelected}/> : <p>laoding component...</p>} 
   
   </div>
  </div>
-  </> 
+  
 ) : (
-  <>
-  {charactersActive ? <Messageboard className='text-terminal-green'cases={casesList} case_selected={caseSelected} characterFilter={charactersActive}/>: <p>laoding component...</p>} 
-  </>
+  
+  charactersActive ? (
+    <div className='app-container'>
+    <div className="mb-header-container">
+    <div className='mb-active-case'>ACTIVE CASE: <span> {caseSelected}</span></div>
+    <div><button className='mb-back-btn'>BACK</button></div>
+    </div>
+    <Messageboard cases={casesList} case_selected={caseSelected} characterFilter={charactersActive}/>
+    </div>)
+  
+  : (<p>laoding component...</p>)
+    
 )
    
   )
