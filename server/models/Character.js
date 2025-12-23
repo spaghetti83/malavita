@@ -1,16 +1,20 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+// --- SOTTOSCHEMI (Mantenuti per modularità e pulizia) ---
 
-
-// 2. Sottoschema: Meccanica di Decadimento (Decay Mechanic)
 const DecayMechanicSchema = new Schema({
   max_effective_uses: { type: Number, default: 1 }, 
   current_uses: { type: Number, default: 0 },
   exhausted_response_guide: { type: String }
 }, { _id: false });
 
-// 3. Sottoschema: Trigger Semantici
+const PressureGateSchema = new Schema({
+  required_evidence_list: [{ type: String }],
+  pressure_cap: { type: Number },
+  gate_response_guide: String
+}, { _id: false });
+
 const SemanticTriggerSchema = new Schema({
   concept_id: { type: String, required: true },
   description: String,
@@ -18,23 +22,21 @@ const SemanticTriggerSchema = new Schema({
   reaction_guide: String,
   
   unlocks: {
-    characters: [{ type: String }], // ID dei personaggi da sbloccare (es: ["char_lijun_102"])
-    evidence: [{ type: String }]    // ID delle prove da sbloccare (es: ["ev_pistola"])
+    characters: [{ type: String }],
+    evidence: [{ type: String }]    
   },
-  // Stat Modificatori
   stat_mod: {
     pressure: { type: Number, default: 0 },
     force_state: String
   },
 
-  // Qui includiamo lo schema corretto per il decay
-  decay_mechanic: DecayMechanicSchema 
+  decay_mechanic: DecayMechanicSchema,
+  pressure_gate: PressureGateSchema 
 }, { _id: false });
 
-// 4. Sottoschema: Presentazione Prove
 const EvidenceTriggerSchema = new Schema({
   evidence_id: { type: String, required: true },
-  found: { type: Boolean, default: false }, // Aggiunto basandosi sul JSON
+  found: { type: Boolean, default: false },
   reaction_guide: String,
   stat_mod: {
     pressure: Number,
@@ -42,32 +44,34 @@ const EvidenceTriggerSchema = new Schema({
   }
 }, { _id: false });
 
-// 5. Schema Principale Character
+// --- SCHEMA PRINCIPALE CHARACTER ---
+
 const CharacterSchema = new Schema({
-  status: {
-        type: String,
-        enum: ['LOCKED', 'UNLOCKED'],
-        default: 'LOCKED' // Di default un personaggio è nascosto
-    },
-  // _id gestito manualmente come stringa ("char_chen_101")
-  _id: { type: String, required: true }, 
+  _id: { type: String, required: true },
   
-  name: { type: String, required: true },
-  codename: String,
-  role: { type: String, enum: ['Suspect', 'Witness', 'Ally'], required: true },
-  archetype: String,
-  is_hostile: { type: Boolean, default: false },
+  // AGGIORNAMENTO: Inserito 'AVAILABLE' negli stati ammessi
+  status: { 
+    type: String, 
+    enum: ['LOCKED', 'KNOWN', 'AVAILABLE'], 
+    default: 'UNLOCKED' 
+  },
   
-  // NUOVO CAMPO: Case ID per associare il personaggio al caso specifico
-  case_id: { type: String, required: true }, 
-
-  avatar_asset: String,
-
-  // Constraints narrativi (System Instructions)
-  narrative_constraints: {
-    strict_rules: [{ type: String }]
+  role: { 
+    type: String, 
+    enum: ['Suspect', 'Witness', 'Ally', 'Team_Expert'], 
+    default: 'Suspect' 
   },
 
+  name: { type: String, required: true },
+  codename: String,
+  case_id: { type: String, required: true },
+  avatar_asset: String,
+
+  linguistics: {
+    primary_language: { type: String, default: 'it' },
+    known_languages: [{ type: String }],
+    unknown_language_reaction: { type: String }
+  },
 
   profile: {
     background: String,
@@ -95,25 +99,15 @@ const CharacterSchema = new Schema({
       location: String,
       action: String,
       motive: String,
-      // Aggiornato ad Array di Stringhe come da JSON (che ne ha 3)
       weapon: [{ type: String }], 
       mistake: String
     }
   },
 
   narrative_defense_logic: {
-    level_1_denial: {
-      condition: String,
-      ai_instruction: String
-    },
-    level_2_cracks: {
-      condition: String,
-      ai_instruction: String
-    },
-    level_3_breakdown: {
-      condition: String,
-      ai_instruction: String
-    }
+    level_1_denial: { condition: String, ai_instruction: String },
+    level_2_cracks: { condition: String, ai_instruction: String },
+    level_3_breakdown: { condition: String, ai_instruction: String }
   },
 
   interaction_triggers: {
@@ -126,9 +120,7 @@ const CharacterSchema = new Schema({
     sensitivity_threshold: { type: Number, default: 0.8 },
     fallback_response: String
   }
-
-}, { timestamps: true }); // Opzionale: aggiunge createdAt e updatedAt
+}, { timestamps: true });
 
 const Character = mongoose.model('Character', CharacterSchema);
-
 module.exports = Character;

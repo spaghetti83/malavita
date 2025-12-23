@@ -76,7 +76,7 @@ const loadCharacterList = async (activeCase) => {
       console.log("character list loaded!",data)
       let unlockedChar = []
       data.characterList.map( (e) => {
-        if(e.status === "UNLOCKED" ){
+        if(e.status === "AVAILABLE"){
           console.log("isUnlocked!",e._id)
           unlockedChar.push(e)
         }
