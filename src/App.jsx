@@ -135,7 +135,7 @@ useEffect(()=>{
     <div className='app-container'>
     <div className="mb-header-container">
     <div className='mb-active-case'>ACTIVE CASE: <span> {caseSelected}</span></div>
-    <div><button className='mb-back-btn'>BACK</button></div>
+    <div><button className='mb-back-btn' onClick={()=> setCurrentView('menu')}>BACK</button></div>
     </div>
     <Messageboard cases={casesList} case_selected={caseSelected} characterFilter={charactersActive}/>
     </div>)

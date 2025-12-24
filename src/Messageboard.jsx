@@ -59,7 +59,7 @@ const loadCharacter = async (id)=> {
         const data = await response.json() 
         console.log(data)
         setCharacterLoaded(data.character)
-        setChatLog(`Speaking with: ${data.character.name}`)
+        setChatLog(data.character.name)
         setStressLevel(data.character.state_metrics.pressure_level)
         setPressureLimits(data.character.interaction_triggers.semantic_triggers)
         setSemanticEvaluetor(JSON.stringify({triggered_concepts: data.character.interaction_triggers.semantic_triggers, prompt: data.prompt}))
@@ -73,7 +73,7 @@ const loadCharacter = async (id)=> {
 
 const semanticEngine = async (message) => {
   console.log("semantic evaluation started...")
-  setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is listening... </span>)
+  setChatLog(<span style={{ fontStyle: 'italic'}}>{characterLoaded.name} is thinking...</span>)
   try{
   const response = await fetch('http://localhost:5000/semantic-evaluetor',{
     method : 'POST',
@@ -107,7 +107,9 @@ const semanticEngine = async (message) => {
 const semanticEvaluetorErrorHandler = async (message) => {
 ///TO DEFINE
 }
-
+const evalueteNpcAnswer = ()=>{
+  
+}
 
 
 useEffect(()=>{
@@ -160,7 +162,7 @@ useEffect(()=>{
 groups
 </span></li>
             )
-          
+           
             ))
             
            : <p>loading characters...</p>

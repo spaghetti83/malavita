@@ -40,7 +40,7 @@
       "time_window": "August 29, 2025, from 22:00 to 05:00 the next day."
     },
     "ground_truth": {
-      "location": "Rossi Market in the afternoon for the setup, then my Apartment at North Hill for the rest of the night.",
+      "location": "Lin Bo Market in the afternoon for the setup, then my Apartment at North Hill for the rest of the night.",
       "action": "Planted a timed incendiary device behind the toilet paper aisle during the afternoon visit to the market.",
       "motive": "Business rivalry and failed acquisition of Rossi's property.",
       "weapon": [

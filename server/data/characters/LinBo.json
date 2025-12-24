@@ -6,11 +6,6 @@
   "role": "Witness",
   "case_id": "case_101",
   "avatar_asset": "/assets/avatars/case_101/lin_bo_portrait.png",
-  "linguistics": {
-    "primary_language": "it",
-    "known_languages": ["it", "zh"],
-    "unknown_language_reaction": "Ti guarda con una calma dignitosa. 'Non capisco questa lingua, Detective. Dopo trent'anni qui, preferisco parlare in italiano o nel mio dialetto natio.'"
-  },
   "profile": {
     "background": "62 years old. Originally from Wenzhou, he has lived in Italy for 30 years. Owner of the 'Lin Market'. He has always managed his business with honesty, often clashing with Chen Wei's power dynamics in the neighborhood.",
     "personality_traits": [
@@ -72,10 +67,15 @@
         "reaction_guide": "Covers his face with his hands. 'The smell was terrible... it wasn't just wood burning. It was sharp, like acid. It took my breath away.'",
         "unlocks": {
           "characters": [],
-          "evidence": ["ev_chemical_smell"]
+          "evidence": []
         },
         "stat_mod": {
           "pressure": 10
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 2,
+          "current_uses": 0,
+          "exhausted_response_guide": "Sigh deeply. 'I already told you. It was horrible, I don't want to talk about it anymore, sorry...'"
         }
       },
       {
@@ -96,12 +96,10 @@
         "stat_mod": {
           "pressure": 15
         },
-        "pressure_gate": {
-          "required_evidence_list": [
-            "ev_threat_note"
-          ],
-          "pressure_cap": 80,
-          "gate_response_guide": "BREAKDOWN. 'Fine! He told me that if I didn't sell, the Lin Market would become ash. I was too ashamed to tell you before!'"
+        "decay_mechanic": {
+          "max_effective_uses": 2,
+          "current_uses": 0,
+          "exhausted_response_guide": "'I'M SURE! IT WAS CHEN!! He always wanted my shop!'"
         }
       }
     ],
@@ -109,9 +107,9 @@
       {
         "evidence_id": "ev_burnt_receipt",
         "found": true,
-        "reaction_guide": "Examines the fragment with trembling hands. 'This is not mine. Someone used my store's account name to buy those chemical agents. I never ordered this much acetone.'",
+        "reaction_guide": "He examines the receipt. 'I was sure of it! Only Chen could have done it! He would have done anything to have my market!'",
         "stat_mod": {
-          "pressure": 20
+          "pressure": -10
         }
       },
       {

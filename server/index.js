@@ -48,19 +48,15 @@ const semanticEngine = async (req,res,next)=>{
         });
 
         const evaluationResponse = JSON.parse(evaluation.choices[0].message.content)
-        console.log("STRESS", evaluationResponse)
-        //setStressModifier(evaluation.pressure_modifiers)
+        console.log("semantic engine response:",evaluationResponse)
         if (evaluationResponse.results.length !== 0) {
             console.log("adding pressure...", evaluationResponse)
-            //addPressure(evaluation) anwer to "addPressure"
-            //res.send({status: "ALTERATED" ,message: evaluationResponse})
             req.isAlterated = true
             req.resp = evaluationResponse
             next()
         } else {
             console.log("no changes in pressure")
             console.log("going to start npcChat with this message:", message)
-            //npcChat(message) answer to npcChat
             req.isAlterated = false
             req.resp = evaluationResponse
             next()
@@ -121,7 +117,7 @@ if(!req.isAlterated){
 };
 
 app.post('/semantic-evaluetor',semanticEngine,addPressure, async (req,res) => { 
-    console.log("SEMANTIC EVALUATOR MIDDLEWARE COMPLATED")
+    console.log("SEMANTIC EVALUATOR MIDDLEWARE COMPLETED")
     
      const gptKey = VITE_GPT_MINI_KEY;
 
@@ -148,8 +144,6 @@ app.post('/semantic-evaluetor',semanticEngine,addPressure, async (req,res) => {
     });
     
     res.send({message: response.choices[0].message, pressure: req.pressure})
-   
-
     
     } catch (error) {
         console.log(error)
