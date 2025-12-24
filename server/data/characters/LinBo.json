@@ -88,7 +88,7 @@
           "threats",
           "The Fox"
         ],
-        "reaction_guide": "Looks away. 'Chen Wei sees the world as a chessboard. I just wanted to sell my goods in peace. He doesn't like peace.'",
+        "reaction_guide": "Chen Wei sees the world as a chessboard. I just wanted to sell my goods in peace. He doesn't like peace.",
         "unlocks": {
           "characters": ["char_chen_101"],
           "evidence": []

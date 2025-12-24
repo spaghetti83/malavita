@@ -120,10 +120,7 @@
           "chemical reaction"
         ],
         "reaction_guide": "Eyes light up. 'TATP? Triacetone Triperoxide? That would explain the lack of gasoline traces. Dangerous stuff. If Chen bought these... he's crazy.'",
-        "unlocks": {
-          "characters": ["char_chen_101"],
-          "evidence": ["ev_bomb_formula"]
-        },
+        "unlocks": ["ev_bomb_formula"],
         "stat_mod": {
           "pressure": 0
         }

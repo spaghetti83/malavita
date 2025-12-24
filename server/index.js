@@ -4,6 +4,7 @@ const cors = require('cors');
 const Character = require('./models/Character');
 const CaseModel = require('./models/Cases_list')
 const Session = require('./models/Session')
+const CaseEvidence = require('./models/Case_model')
 const path = require('path')
 const fs = require('fs');
 const { stripVTControlCharacters } = require('util');
@@ -210,6 +211,74 @@ app.get('/character/:id',async (req,res) =>{
     }
 })
 
+app.post('/semantic-evaluetor-npc',async (req,res)=>{
+    console.log("starting to evaluate from the server...")
+    const semanticEvaluetor = req.body.semantic_evaluetor
+    const message = req.body.message
+    const caseId = req.body.case
+    const userId = req.body.user
+    console.log("case:",caseId,"user:", userId)
+    //reading the prompt//////////////////////////
+    const promptPath = path.join(__dirname, 'data/logic/', 'npc_discovery_analyzer_prompt.md');
+    const promptContent = fs.readFileSync(promptPath, 'utf8');
+    /////////////////////////////////////////////
+    console.log(promptContent ? "prompt EXIST":"prompt DO NOT EXIST")
+    console.log("finding evidences file into the db...")
+    const caseEvidenceFile = await CaseEvidence.findOne({"user_id": userId, "case_id": caseId})
+    console.log("case file found.")
+    if(caseEvidenceFile){
+    const gptKey = VITE_GPT_MINI_KEY;
+    const client = new OpenAI({
+      apiKey: gptKey
+    });
+
+    try {
+        const evaluation = await client.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: JSON.stringify({ caseFile: caseEvidenceFile, prompt: promptContent})},
+                { role: "user", content: message }
+            ],
+            temperature: 0.0
+        });
+
+        const evaluationResponse = JSON.parse(evaluation.choices[0].message.content)
+        console.log("NPC semantic engine response:",evaluationResponse)
+        evaluationResponse.discovered_items.map(async e =>{
+            const character = await Character.updateOne(
+                {"_id": e.id},
+                { "$set" : {"status" : "AVAILABLE"}} 
+            )
+            if (character.matchedCount === 0) {
+                console.log("character not found");
+            } else if (character.modifiedCount === 0) {
+                console.log("character already AVAILABLE");
+            } else {
+                console.log("character successfully AVAILABLE");
+            }
+            const evidence = await CaseEvidence.updateOne(
+                {"user_id": e.id, "case_id": caseId},
+                { "$set" : {"character_list.$.status" : "AVAILABLE"}})
+            if (evidence.matchedCount === 0) {
+                console.log("evidence not found");
+            } else if (evidence.modifiedCount === 0) {
+                console.log("evidence already AVAILABLE");
+            } else {
+                console.log("evidence successfully AVAILABLE");
+            }    
+        })
+         res.send({message: "evaluation terminated", id : userId, case: caseId})
+        
+
+    } catch (error) {
+        console.log(error)
+    }
+}else{
+    console.log(`can't find any nothing about ${caseId} in the database`)
+}
+})
+
+
 const casesListCheck = async (req,res,next) =>{
    
     console.log("casesList middleware...")
@@ -247,7 +316,7 @@ app.get('/cases',casesListCheck, async (req,res) =>{
 
 app.post('/session',async (req,res)=> {
     console.log("looking for a session...")
-    console.log(req.body)
+    console.log(req.body)   
     const session = await Session.findOne({'userId': req.body.id})
 
     if(session){

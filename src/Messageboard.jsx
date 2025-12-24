@@ -15,7 +15,9 @@ const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
 const [stressModifier,setStressModifier] = useState([])
 const [pressureLimits,setPressureLimits] = useState([])
-const characterList =  props.characterFilter 
+const characterList =  props.characterFilter
+const caseSelectedId = props.case_selected
+const userId = props.user
 const [activeTab,setActiveTab] = useState("character")
 
 
@@ -63,7 +65,6 @@ const loadCharacter = async (id)=> {
         setStressLevel(data.character.state_metrics.pressure_level)
         setPressureLimits(data.character.interaction_triggers.semantic_triggers)
         setSemanticEvaluetor(JSON.stringify({triggered_concepts: data.character.interaction_triggers.semantic_triggers, prompt: data.prompt}))
-        
         console.log("prompt loaded to the NPC...")
         //return data
     }catch(error){
@@ -94,6 +95,7 @@ const semanticEngine = async (message) => {
     console.log("going to start npcChat with this message:",data)
     setChatLog(data.message.content)
     data.pressure ? setStressLevel(data.pressure) : setStressLevel(stressLevel)
+    evalueteNpcAnswer(data.message.content)
     //return  data
   }catch(error){
     console.log("ERROR found:", error)
@@ -107,8 +109,36 @@ const semanticEngine = async (message) => {
 const semanticEvaluetorErrorHandler = async (message) => {
 ///TO DEFINE
 }
-const evalueteNpcAnswer = ()=>{
+
+
+const evalueteNpcAnswer = async (message)=>{
+  console.log("evaluating NPC response...")
+  console.log("message from NPC:", message)
   
+
+  try{
+  const response = await fetch('http://localhost:5000/semantic-evaluetor-npc',{
+    method : 'POST',
+    headers : {'Content-Type' : 'application/json'},
+    body : JSON.stringify({
+      message : message,
+      user : userId,
+      case : caseSelectedId
+    })
+  })
+    
+    const data = await response.json()
+    console.log(data.message)
+    console.log(data.id)
+  if(data){
+    props.charListFunction(caseSelectedId)
+  }
+  }catch(error){
+    console.log("ERROR found:", error)
+  
+  }
+
+
 }
 
 

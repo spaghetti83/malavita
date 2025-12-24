@@ -53,7 +53,7 @@ const CharacterSchema = new Schema({
   status: { 
     type: String, 
     enum: ['LOCKED', 'KNOWN', 'AVAILABLE'], 
-    default: 'UNLOCKED' 
+    default: 'LOCKED' 
   },
   
   role: { 

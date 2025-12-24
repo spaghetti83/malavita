@@ -1,0 +1,95 @@
+{
+  "user_id": "user_1234",
+  "case_id": "case_101",
+  "case_title": "Ashes and Envy",
+  "evidence_list": [
+    {
+      "ev_id": "ev_burnt_receipt",
+      "display_name": "Charred Receipt Fragment",
+      "type": "PHYSICAL",
+      "status": "LOCKED",
+      "require": [], 
+      "description": "A partially burnt receipt recovered from Chen Wei's fireplace...",
+      "metadata": { "found_at": "2025-08-30T10:00:00Z", "location_id": "loc_chen_apartment" }
+    },
+    {
+      "ev_id": "ev_digital_receipt_cn",
+      "display_name": "Encrypted Digital Transaction",
+      "type": "DIGITAL",
+      "status": "LOCKED",
+      "require": [],
+      "description": "A digital record retrieved from the 'Lin Bo Market' database...",
+      "metadata": { "found_at": "2025-08-30T14:30:00Z", "source": "Lin Bo Market Database" }
+    },
+    {
+      "ev_id": "ev_glitch_report",
+      "display_name": "Cell Tower Triangulation Report",
+      "type": "DIGITAL",
+      "status": "LOCKED",
+      "require": ["ev_cctv_north_hill"],
+      "description": "Technical analysis showing that Li Jun's phone was pinging towers in North Hill...",
+      "metadata": { "analyst": "Glitch", "target_id": "char_li_jun_witness" }
+    },
+    {
+      "ev_id": "ev_melted_clock_gears",
+      "display_name": "Melted Clock Mechanism",
+      "type": "PHYSICAL",
+      "status": "LOCKED",
+      "require": ["ev_burnt_receipt"],
+      "description": "Found in the debris of the Rossi Market...",
+      "metadata": { "found_at": "2025-08-29T06:00:00Z", "location_id": "loc_lin_bo_market_ruins" }
+    },
+    {
+      "ev_id": "ev_lab_tatp_analysis",
+      "display_name": "Forensic Chemical Report",
+      "type": "LAB_RESULT",
+      "status": "LOCKED",
+      "require": ["ev_melted_clock_gears", "char_silvia_moretti_expert"],
+      "description": "Official lab report by Silvia Moretti confirming traces of TATP...",
+      "metadata": { "analyst": "char_silvia_moretti_expert", "complexity_level": "HIGH" }
+    },
+    {
+      "ev_id": "ev_cctv_north_hill",
+      "display_name": "Red Dragon Club Camera Footage",
+      "type": "DIGITAL",
+      "status": "LOCKED",
+      "require": ["char_li_jun_witness"],
+      "description": "The video footage provided by Li Jun appears to be tampered with...",
+      "metadata": { "source": "Red Dragon Club Surveillance", "timestamp": "2025-08-29T03:30:00Z" }
+    }
+  ],
+  "character_list": [
+    {
+      "ch_id": "char_silvia_moretti_expert",
+      "ch_name": "Silvia Moretti",
+      "status": "UNLOCKED",
+      "require": [],
+      "description": "Brilliant forensic chemist known as 'The Alchemist'...",
+      "metadata": { "role": "Ally", "archetype": "The Brilliant Chemist", "location_id": "loc_forensic_lab" }
+    },
+    {
+      "ch_id": "char_lin_bo_victim",
+      "ch_name": "Lin Bo",
+      "status": "UNLOCKED",
+      "require": [],
+      "description": "Owner of the burned 'Lin Bo Market'...",
+      "metadata": { "role": "Witness", "archetype": "The Desperate Shopkeeper", "location_id": "loc_lin_bo_market_ruins" }
+    },
+    {
+      "ch_id": "char_li_jun_witness",
+      "ch_name": "Li Jun",
+      "status": "LOCKED",
+      "require": ["ev_digital_receipt_cn"],
+      "description": "Owner of the Red Dragon Club...",
+      "metadata": { "role": "Witness", "archetype": "The Untouchable Boss", "location_id": "loc_red_dragon_club" }
+    },
+    {
+      "ch_id": "char_chen_101",
+      "ch_name": "Chen Wei",
+      "status": "LOCKED",
+      "require": ["ev_lab_tatp_analysis", "ev_glitch_report"],
+      "description": "Owner of the Emporium and business rival of Lin Bo...",
+      "metadata": { "role": "Suspect", "archetype": "The Calculator", "location_id": "loc_chen_emporium" }
+    }
+  ]
+}

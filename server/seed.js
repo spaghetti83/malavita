@@ -27,6 +27,14 @@ const DATA_TO_SEED = [
    {
     collection: 'characters',
     filePath: `./data/characters/WRONG.json`
+  },
+  {
+    collection: 'cases',
+    filePath: `./data/cases/case_101.json`
+  },
+  {
+    collection: 'cases',
+    filePath: `./data/cases/cases_list.json`
   }
 
   // Puoi aggiungere altri file qui
