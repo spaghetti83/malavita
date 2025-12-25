@@ -1,0 +1,73 @@
+[
+ {
+    "user_id" : "user_1234"
+},
+  {
+    
+    "evidence_id": "ev_burnt_receipt",
+    "case_id": "case_101",
+    "display_name": "Burned receipt",
+    "description": "fragment of a burned receipt, still visible a code #883-XC-99 and some indications written in Chinese",
+    "type": "PHYSICAL",
+    "status": {
+      "is_found": false,
+      "found_location": "Chen's home"
+    },
+    "analysis": {
+      "requires_expert": true,
+      "target_expert": "LAB_EXPERT",
+      "is_analyzed": false,
+      "expert_report": "Chemical analysis revealed traces of a highly specialized industrial accelerant. This suggests the arson was premeditated and not a simple accident.",
+      "unlocked_concepts": ["CPT_CHEMICALS", "CPT_RECEIPT"]
+    },
+    "metadata": {
+      "image_asset": "public/evidences/ev_burnt_receipt.png",
+      "is_crucial": true
+    }
+  },
+  {
+    "evidence_id": "ev_digital_receipt_cn",
+    "case_id": "case_101",
+    "display_name": "Digital receipt",
+    "description": "Complete digital receipt with a list of purchased products: acetone, clock, peroxide in Chinese",
+    "type": "DIGITAL",
+    "status": {
+      "is_found": true,
+      "found_location": "Web"
+    },
+    "analysis": {
+      "requires_expert": false,
+      "target_expert": "",
+      "is_analyzed": true,
+      "expert_report": "",
+      "unlocked_concepts": ["CPT_CHEMICALS"]
+    },
+    "metadata": {
+      "image_asset": "assets/evidence/case_101/cctv_still.webp",
+      "is_crucial": true
+    }
+  },
+  {
+    "evidence_id": "ev_101_insurance_ledger",
+    "case_id": "case_101",
+    "display_name": "Financial Ledger",
+    "description": "A physical accounting book found in Chen Wei's desk. Some pages regarding recent insurance adjustments are bookmarked.",
+    "type": "DOCUMENT",
+    "status": {
+      "is_found": true,
+      "found_location": "Chen Wei's private office"
+    },
+    "analysis": {
+      "requires_expert": true,
+      "target_expert": "CHIEF",
+      "is_analyzed": false,
+      "expert_report": "The Chief confirms that the insurance policy for the club was tripled just two weeks before the fire. This establishes a clear financial motive for the owner.",
+      "unlocked_concepts": ["insurance_fraud_motive"]
+    },
+    "metadata": {
+      "image_asset": "assets/evidence/case_101/ledger.webp",
+      "is_crucial": false
+    }
+  }
+
+]
