@@ -123,7 +123,8 @@ const evalueteNpcAnswer = async (message)=>{
     body : JSON.stringify({
       message : message,
       user : userId,
-      case : caseSelectedId
+      case : caseSelectedId,
+      npc: selelectedChar
     })
   })
     

@@ -93,6 +93,7 @@ const addPressure = async (req, res, next) => {
                         console.log("adding",result.pressure_modifiers, "of",pressureAccumulated )
                         
                     } else {
+                        
                         console.log("no increment pressure, concept id", e.concept_id, "already investigated")
                     }
                 }
@@ -213,18 +214,19 @@ app.get('/character/:id',async (req,res) =>{
 
 app.post('/semantic-evaluetor-npc',async (req,res)=>{
     console.log("starting to evaluate from the server...")
-    const semanticEvaluetor = req.body.semantic_evaluetor
     const message = req.body.message
     const caseId = req.body.case
     const userId = req.body.user
+    const npc = req.body.npc
     console.log("case:",caseId,"user:", userId)
     //reading the prompt//////////////////////////
-    const promptPath = path.join(__dirname, 'data/logic/', 'npc_discovery_analyzer_prompt.md');
+    const promptPath = path.join(__dirname, 'data/logic/', 'semantic_analyzer_prompt.md');
     const promptContent = fs.readFileSync(promptPath, 'utf8');
     /////////////////////////////////////////////
     console.log(promptContent ? "prompt EXIST":"prompt DO NOT EXIST")
     console.log("finding evidences file into the db...")
     const caseEvidenceFile = await CaseEvidence.findOne({"user_id": userId, "case_id": caseId})
+    
     console.log("case file found.")
     if(caseEvidenceFile){
     const gptKey = VITE_GPT_MINI_KEY;
@@ -236,7 +238,8 @@ app.post('/semantic-evaluetor-npc',async (req,res)=>{
         const evaluation = await client.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
-                { role: "system", content: JSON.stringify({ caseFile: caseEvidenceFile, prompt: promptContent})},
+                //{ role: "system", content: JSON.stringify({ caseFile: caseEvidenceFile, prompt: promptContent})},
+                { role: "system", content: JSON.stringify({ npc: npc, caseFile: caseEvidenceFile ,prompt: promptContent})},
                 { role: "user", content: message }
             ],
             temperature: 0.0
@@ -244,9 +247,10 @@ app.post('/semantic-evaluetor-npc',async (req,res)=>{
 
         const evaluationResponse = JSON.parse(evaluation.choices[0].message.content)
         console.log("NPC semantic engine response:",evaluationResponse)
-        evaluationResponse.discovered_items.map(async e =>{
+        
+        evaluationResponse.results.map(async e =>{
             const character = await Character.updateOne(
-                {"_id": e.id},
+                {"_id": e.triggered_ids},
                 { "$set" : {"status" : "AVAILABLE"}} 
             )
             if (character.matchedCount === 0) {
@@ -257,7 +261,7 @@ app.post('/semantic-evaluetor-npc',async (req,res)=>{
                 console.log("character successfully AVAILABLE");
             }
             const evidence = await CaseEvidence.updateOne(
-                {"user_id": e.id, "case_id": caseId},
+                {"user_id":e.triggered_ids, "case_id": caseId},
                 { "$set" : {"character_list.$.status" : "AVAILABLE"}})
             if (evidence.matchedCount === 0) {
                 console.log("evidence not found");

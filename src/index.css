@@ -48,12 +48,13 @@ body {
   font-family: 'VT323', monospace;
   align-items: center;
   font-size: 30px;
+  
 }
 .app-container {
   background-color: var(--terminal-bg);
   box-sizing: border-box;
   width: 100%;
-  
+ 
   font-family: 'VT323', monospace;
   max-width: 600px;
 }
@@ -95,10 +96,10 @@ li:hover{
 .mb-container-buttons{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background-color: #ef4444;
+  
 }
 .mb-character-list-container{
-  background-color: #ef4444;
+
   padding-left: 0px;
 }
 .mb-character-list {
@@ -169,4 +170,26 @@ width: 100%;
   text-align: left;
   display: block;
   align-content: center;
+}
+.nb-container{
+  bottom: 0px;
+  left: 0;
+  border: var(--border-default);
+  background-color: var(--terminal-bg);
+  position: fixed;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  margin: 10px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
+.nb-btns-container{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 6px;
+}
+.nb-btns:hover {
+  cursor: pointer;
 }

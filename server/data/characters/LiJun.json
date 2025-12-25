@@ -78,7 +78,12 @@
           "evidence": []
         },
         "stat_mod": {
-          "pressure": -5
+          "pressure": 0
+        },
+        "decay_mechanic": {
+          "max_effective_uses": 2,
+          "current_uses": 0,
+          "exhausted_response_guide": "Look bored. 'We discussed this. He is a customer. Stop asking.'"
         }
       },
       {

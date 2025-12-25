@@ -2,7 +2,7 @@ import './App.css'
 import { useState, useEffect } from "react";
 import Messageboard from './Messageboard'
 import CasesList from './CasesList'
-
+import Archive from './Archive';
 
 const App = () => {
   const [userId, setUserId] = useState("user_1234")  //default for dev reasons
@@ -119,7 +119,7 @@ useEffect(()=>{
 
   return (
    
-     currentView === 'menu' ? (
+  currentView === 'menu' ? (
 
   <div className='app-container'>
   
@@ -132,15 +132,56 @@ useEffect(()=>{
 ) : (
   
   charactersActive ? (
+
+    <>
+    {currentView === "menu" && (
     <div className='app-container'>
-    <div className="mb-header-container">
-    <div className='mb-active-case'>ACTIVE CASE: <span> {caseSelected}</span></div>
-    <div><button className='mb-back-btn' onClick={()=> setCurrentView('menu')}>BACK</button></div>
+      
     </div>
-    <Messageboard user={userId} cases={casesList} case_selected={caseSelected} characterFilter={charactersActive} charListFunction={loadCharacterList}/>
-    </div>)
-  
-  : (<p>laoding component...</p>)
+    ) }
+    {currentView === "message-board" &&(
+      <>
+      <div className="mb-header-container">
+        <div className='mb-active-case'>ACTIVE CASE: <span> {caseSelected}</span></div>
+        <div><button className='mb-back-btn' onClick={()=> setCurrentView('menu')}>BACK</button></div>
+      </div>
+      <Messageboard user={userId} cases={casesList} case_selected={caseSelected} characterFilter={charactersActive} charListFunction={loadCharacterList}/>
+   
+      </>
+    )
+    }
+    {currentView === "archive" && (
+      <>
+      <Archive />
+      </>
+    ) 
+
+    }
+    {currentView === "mail" && (
+      <>
+      <div>MAIL</div>
+      </>
+    )
+    }
+    {currentView === "web" && (
+      <>
+      <div>WEB</div>
+      </>
+    )
+    }
+
+
+    <div className="nb-container">
+            <div className="nb-btns-container">
+                <div className="nb-btns" onClick={()=> setCurrentView("archive")}><span className="material-icons">folder_open</span></div>
+                <div className="nb-btns" onClick={()=> setCurrentView("message-board")}><span className="material-icons">group</span></div>
+                <div className="nb-btns" onClick={()=> setCurrentView("mail")}><span className="material-icons">mail</span></div>
+                <div className="nb-btns" onClick={()=> setCurrentView("web")}><span className="material-icons">monitor</span></div>
+                
+            </div>
+        </div>
+    </>
+    ) : (<p>laoding component...</p>)
     
 )
    
