@@ -173,7 +173,7 @@ useEffect(()=>{
 
     <div className="nb-container">
             <div className="nb-btns-container">
-                <div className="nb-btns" onClick={()=> setCurrentView("archive")}><span className="material-icons">folder_open</span></div>
+                <div className="nb-btns" onClick={()=> setCurrentView("archive")} case_id={caseSelected} user_id={userId}><span className="material-icons">folder_open</span></div>
                 <div className="nb-btns" onClick={()=> setCurrentView("message-board")}><span className="material-icons">group</span></div>
                 <div className="nb-btns" onClick={()=> setCurrentView("mail")}><span className="material-icons">mail</span></div>
                 <div className="nb-btns" onClick={()=> setCurrentView("web")}><span className="material-icons">monitor</span></div>

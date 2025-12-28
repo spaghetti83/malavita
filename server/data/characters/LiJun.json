@@ -5,7 +5,7 @@
   "codename": "The Shark",
   "role": "Witness",
   "case_id": "case_101",
-  "avatar_asset": "/assets/avatars/case_101/li_jun_club.png",
+  "avatar_asset": "public/characters/case_101/li_jun.png",
   "linguistics": {
     "primary_language": "it",
     "known_languages": ["it", "zh"],
@@ -111,7 +111,7 @@
       },
       {
         "concept_id": "CPT_CCTV_FOOTAGE",
-        "description": "Requests to see the video surveillance.",
+        "description": "Video surveillance",
         "examples": [
           "show me the video",
           "cameras",

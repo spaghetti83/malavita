@@ -5,7 +5,7 @@
   "codename": "The Fox",
   "role": "Suspect",
   "case_id": "case_101",
-  "avatar_asset": "/assets/avatars/case_101/chen_portrait.png",
+  "avatar_asset": "public/characters/case_101/chen_wei.png",
   "linguistics": {
     "primary_language": "it",
     "known_languages": [

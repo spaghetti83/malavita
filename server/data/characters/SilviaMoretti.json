@@ -5,7 +5,7 @@
   "codename": "The Alchemist",
   "role": "Ally",
   "case_id": "case_101",
-  "avatar_asset": "/assets/avatars/case_101/silvia_moretti.png",
+  "avatar_asset": "public/characters/team/silvia_moretti.png",
   "linguistics": {
     "primary_language": "it",
     "known_languages": [

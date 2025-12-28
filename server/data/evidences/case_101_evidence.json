@@ -1,73 +1,93 @@
-[
- {
-    "user_id" : "user_1234"
-},
-  {
-    
-    "evidence_id": "ev_burnt_receipt",
-    "case_id": "case_101",
-    "display_name": "Burned receipt",
-    "description": "fragment of a burned receipt, still visible a code #883-XC-99 and some indications written in Chinese",
-    "type": "PHYSICAL",
-    "status": {
-      "is_found": false,
-      "found_location": "Chen's home"
+{
+  "user_id": "user_1234",
+  "evidences": [
+    {
+      "evidence_id": "ev_burnt_receipt",
+      "case_id": "case_101",
+      "display_name": "Burned receipt",
+      "description": "fragment of a burned receipt, still visible a code #883-XC-99 and some indications written in Chinese",
+      "type": "PHYSICAL",
+      "status": {
+        "is_found": false,
+        "found_location": "Chen's home"
+      },
+      "analysis": {
+        "requires_expert": true,
+        "target_expert": "LAB_EXPERT",
+        "is_analyzed": false,
+        "expert_report": "Chemical analysis revealed traces of a highly specialized industrial accelerant. This suggests the arson was premeditated and not a simple accident.",
+        "unlocked_concepts": ["CPT_CHEMICALS", "CPT_RECEIPT"]
+      },
+      "metadata": {
+        "image_asset": "public/evidences/ev_burnt_receipt.png",
+        "is_crucial": true
+      }
     },
-    "analysis": {
-      "requires_expert": true,
-      "target_expert": "LAB_EXPERT",
-      "is_analyzed": false,
-      "expert_report": "Chemical analysis revealed traces of a highly specialized industrial accelerant. This suggests the arson was premeditated and not a simple accident.",
-      "unlocked_concepts": ["CPT_CHEMICALS", "CPT_RECEIPT"]
+    {
+      "evidence_id": "ev_digital_receipt_cn",
+      "case_id": "case_101",
+      "display_name": "Digital receipt",
+      "description": "Complete digital receipt with a list of purchased products: acetone, clock, peroxide in Chinese",
+      "type": "DIGITAL",
+      "status": {
+        "is_found": false,
+        "found_location": "Web"
+      },
+      "analysis": {
+        "requires_expert": false,
+        "target_expert": "",
+        "is_analyzed": true,
+        "expert_report": "Forensic analysis of the video file reveals a mismatch between the internal Atom Metadata (ISO/IEC 14496-12) and the visual timestamp overlay. While the frame display shows 03:00 AM, the 'creation_time' encoded in the binary header is 05:45 AM. Additionally, the presence of inconsistent global motion vectors suggests frame injection. The footage has been artificially delayed to support a false timeline.",
+        "unlocked_concepts": ["CPT_CHEMICALS"]
+      },
+      "metadata": {
+        "image_asset": "assets/evidence/case_101/cctv_still.webp",
+        "is_crucial": true
+      }
     },
-    "metadata": {
-      "image_asset": "public/evidences/ev_burnt_receipt.png",
-      "is_crucial": true
+    {
+      "evidence_id": "ev_glitch_report",
+      "case_id": "case_101",
+      "display_name": "Glitch report",
+      "description": "Glitch's technical report describing the discrepancy between the video's metadata and the date and time displayed in the video. The video has been tampered with.",
+      "type": "DIGITAL",
+      "status": {
+        "is_found": false,
+        "found_location": "Office"
+      },
+      "analysis": {
+        "requires_expert": true,
+        "target_expert": "HACKER",
+        "is_analyzed": false,
+        "expert_report": "",
+        "unlocked_concepts": ["CPT_ALIBI_LOCATION"]
+      },
+      "metadata": {
+        "image_asset": "assets/evidence/case_101/ledger.webp",
+        "is_crucial": false
+      }
+    },
+    {
+      "evidence_id": "ev_cell_tower_log",
+      "case_id": "case_101",
+      "display_name": "Cell Tower Log #442",
+      "description": "A technical report from the telecom provider showing Li Jun's mobile device connected to a cell tower in North Hill at 03:00 AM, miles away from the Red Dragon Club.",
+      "type": "DIGITAL",
+      "status": {
+        "is_found": true,
+        "found_location": "Server Room"
+      },
+      "analysis": {
+        "requires_expert": true,
+        "target_expert": "HACKER",
+        "is_analyzed": true,
+        "expert_report": "The logs are definitive. Li Jun's phone was pinging the North Hill tower during the exact window he claims to have been at the club. His alibi is physically impossible.",
+        "unlocked_concepts": ["CPT_ALIBI_LOCATION"]
+      },
+      "metadata": {
+        "image_asset": "assets/evidence/case_101/cell_log.webp",
+        "is_crucial": true
+      }
     }
-  },
-  {
-    "evidence_id": "ev_digital_receipt_cn",
-    "case_id": "case_101",
-    "display_name": "Digital receipt",
-    "description": "Complete digital receipt with a list of purchased products: acetone, clock, peroxide in Chinese",
-    "type": "DIGITAL",
-    "status": {
-      "is_found": true,
-      "found_location": "Web"
-    },
-    "analysis": {
-      "requires_expert": false,
-      "target_expert": "",
-      "is_analyzed": true,
-      "expert_report": "",
-      "unlocked_concepts": ["CPT_CHEMICALS"]
-    },
-    "metadata": {
-      "image_asset": "assets/evidence/case_101/cctv_still.webp",
-      "is_crucial": true
-    }
-  },
-  {
-    "evidence_id": "ev_101_insurance_ledger",
-    "case_id": "case_101",
-    "display_name": "Financial Ledger",
-    "description": "A physical accounting book found in Chen Wei's desk. Some pages regarding recent insurance adjustments are bookmarked.",
-    "type": "DOCUMENT",
-    "status": {
-      "is_found": true,
-      "found_location": "Chen Wei's private office"
-    },
-    "analysis": {
-      "requires_expert": true,
-      "target_expert": "CHIEF",
-      "is_analyzed": false,
-      "expert_report": "The Chief confirms that the insurance policy for the club was tripled just two weeks before the fire. This establishes a clear financial motive for the owner.",
-      "unlocked_concepts": ["insurance_fraud_motive"]
-    },
-    "metadata": {
-      "image_asset": "assets/evidence/case_101/ledger.webp",
-      "is_crucial": false
-    }
-  }
-
-]
+  ]
+}

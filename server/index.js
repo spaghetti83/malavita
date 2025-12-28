@@ -4,6 +4,7 @@ const cors = require('cors');
 const Character = require('./models/Character');
 const CaseModel = require('./models/Cases_list')
 const Session = require('./models/Session')
+const Evidence = require('./models/Evidence')
 const CaseEvidence = require('./models/Case_model')
 const path = require('path')
 const fs = require('fs');
@@ -282,7 +283,6 @@ app.post('/semantic-evaluetor-npc',async (req,res)=>{
 }
 })
 
-
 const casesListCheck = async (req,res,next) =>{
    
     console.log("casesList middleware...")
@@ -317,7 +317,14 @@ app.get('/cases',casesListCheck, async (req,res) =>{
 
 })
 
-
+app.post('/evidence-list', async (req,res)=>{
+    console.log("checking evidences")
+    console.log(req.body.user_id,req.body.case_id)
+    const userId = req.body.userId
+    const caseId = req.body.caseId
+    const list = await Evidence.findOne({"user_id": userId, "case_id" : caseId})
+    list && console.log("Evidence list found",list)
+})
 app.post('/session',async (req,res)=> {
     console.log("looking for a session...")
     console.log(req.body)   
