@@ -16,9 +16,7 @@ const evidenceList = async () => {
         headers: {"Content-Type"  : "application/json"},
         body: JSON.stringify({user_id : userId, case_id: caseId})
     })
-    
-
-    const data = response.json()
+        const data = response.json()
    data && console.log("Evidence List", data)
 }catch(error){
     console.log(error)
