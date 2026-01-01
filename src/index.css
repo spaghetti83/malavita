@@ -193,3 +193,23 @@ width: 100%;
 .nb-btns:hover {
   cursor: pointer;
 }
+.ar-tile {
+  cursor:pointer;
+  background-color: var(--terminal-bg-soft);
+  color: var(--terminal-green);
+  
+}
+.ar-title-case {
+  font-size: var(--font-l);
+ 
+}
+.ar-evidence-name{
+  font-size: var(--font-l);
+   text-transform: uppercase;
+   margin: 8px 0px;
+}
+.ar-evidence-description {
+  font-size: var(--font-m);
+  margin-left: 10px;
+  margin-bottom: 4px;
+}

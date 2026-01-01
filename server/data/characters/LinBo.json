@@ -5,7 +5,7 @@
   "codename": "The Dragon",
   "role": "Witness",
   "case_id": "case_101",
-  "avatar_asset": "public/characters/case_101/lin_bo.png",
+  "avatar_asset": "public/case_101/characters/lin_bo.png",
   "profile": {
     "background": "62 years old. Originally from Wenzhou, he has lived in Italy for 30 years. Owner of the 'Lin Market'. He has always managed his business with honesty, often clashing with Chen Wei's power dynamics in the neighborhood.",
     "personality_traits": [

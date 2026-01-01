@@ -6,7 +6,7 @@
   "role": "Digital Forensic Expert",
   "case_id": "case_101",
   "require": ["ev_digital_receipt_cn"],
-  "avatar_asset": "public/characters/team/glitch.png",
+  "avatar_asset": "public/team/glitch.png",
   "linguistics": {
     "primary_language": "en",
     "known_languages": ["en", "it", "Python", "C++"],

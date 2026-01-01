@@ -320,10 +320,11 @@ app.get('/cases',casesListCheck, async (req,res) =>{
 app.post('/evidence-list', async (req,res)=>{
     console.log("checking evidences")
     console.log(req.body.user_id,req.body.case_id)
-    const userId = req.body.userId
-    const caseId = req.body.caseId
-    const list = await Evidence.findOne({"user_id": userId, "case_id" : caseId})
-    list && console.log("Evidence list found",list)
+    const userId = req.body.user_id
+    const caseId = req.body.case_id
+    const evidence = await Evidence.findOne({'user_id': userId})
+    console.log("Evidence list found",evidence)
+    res.send({evidence:evidence})
 })
 app.post('/session',async (req,res)=> {
     console.log("looking for a session...")

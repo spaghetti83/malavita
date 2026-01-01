@@ -1,5 +1,6 @@
 {
   "user_id": "user_1234",
+  "case": "case_101",
   "evidences": [
     {
       "evidence_id": "ev_burnt_receipt",

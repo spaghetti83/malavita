@@ -6,7 +6,7 @@
   "role": "Chief of Police",
   "case_id": "case_101",
   "require": [],
-  "avatar_asset": "/public/characters/team /chief_gatti.png",
+  "avatar_asset": "/public/team/chief_gatti.png",
   "linguistics": {
     "primary_language": "en",
     "known_languages": ["en", "it"],

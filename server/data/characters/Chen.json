@@ -5,14 +5,14 @@
   "codename": "The Fox",
   "role": "Suspect",
   "case_id": "case_101",
-  "avatar_asset": "public/characters/case_101/chen_wei.png",
+  "avatar_asset": "public/case_101/characters/chen_wei.png",
   "linguistics": {
     "primary_language": "it",
     "known_languages": [
       "it",
       "zh"
     ],
-    "unknown_language_reaction": "Aggrotta la fronte con fastidio. 'Non capisco questo dialetto. Parla in italiano o cinese, altrimenti perdiamo tempo entrambi.'"
+    "unknown_language_reaction": "Non capisco questo dialetto. Parla chiaro, altrimenti perdiamo tempo entrambi.'"
   },
   "profile": {
     "background": "56 years old. Divorced, currently a bachelor living alone. He has resided in Italy for over 20 years but travels back to Shanghai frequently, usually during the Spring Festival. He runs a successful import/export side business alongside the Emporium.",
@@ -36,13 +36,13 @@
     "cover_story": {
       "location": "Red Dragon Club (Port South)",
       "witness": "Li Jun",
-      "activity": "Playing a high-stakes Mahjong game with Li Jun and two other associates named Wang and Zhang. We were drinking Jasmine tea and discussing fabric imports.",
+      "activity": "Throughout the evening of August 29th, I was at the Red Dragon Club attending an exclusive, high-stakes Mahjong match hosted by Li Jun. We occupied a private booth to enjoy premium Jasmine tea while meticulously reviewing the latest shipping logistics and tariffs for our upcoming fabric imports. We were entirely focused on our game and these complex business negotiations until the early hours of the morning.",
       "time_window": "August 29, 2025, from 22:00 to 05:00 the next day."
     },
     "ground_truth": {
-      "location": "Lin Bo Market in the afternoon for the setup, then my Apartment at North Hill for the rest of the night.",
-      "action": "Planted a timed incendiary device behind the toilet paper aisle during the afternoon visit to the market.",
-      "motive": "Business rivalry and failed acquisition of Rossi's property.",
+      "location": "Market District / Industrial Area",
+      "action": "Triggered a homemade bomb assembled with materials purchased from the Lin Bo Market. I was positioned in the alley behind the store; the explosion was more powerful than anticipated and caught me off guard, but I managed to flee the scene immediately in my car.",
+      "motive": "Business rivalry and failed acquisition of Lin Bo's property.",
       "weapon": [
         "Analog Alarm Clock",
         "Acetone",

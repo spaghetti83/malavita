@@ -152,7 +152,7 @@ useEffect(()=>{
     }
     {currentView === "archive" && (
       <>
-      <Archive />
+      <Archive user={userId} case_selected={caseSelected}/>
       </>
     ) 
 

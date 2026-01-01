@@ -5,7 +5,7 @@
   "codename": "The Shark",
   "role": "Witness",
   "case_id": "case_101",
-  "avatar_asset": "public/characters/case_101/li_jun.png",
+  "avatar_asset": "public/case_101/characters/li_jun.png",
   "linguistics": {
     "primary_language": "it",
     "known_languages": ["it", "zh"],
@@ -31,10 +31,10 @@
   },
   "knowledge_base": {
     "cover_story": {
-      "location": "Red Dragon Club (Private Room)",
-      "witness": "My security cameras (which I edited)",
-      "activity": "Hosting a VIP Mahjong night. Chen was my guest of honor.",
-      "time_window": "All night. We never left the table."
+      "location": "Red Dragon Club (Port South) - Private VIP Suite",
+      "witness": "Club staff and my personal security logs",
+      "activity": "Chen was my personal guest at the Red Dragon Club for an exclusive, high-stakes Mahjong match on the night of August 29th. We occupied one of our most secluded private booths to ensure total privacy for our discussions. Over several pots of high-grade Jasmine tea, we went through the intricate details of his upcoming fabric imports, specifically focusing on the new shipping logistics and the impact of recent tariff changes. The session was long and quiet, ending only as the sun began to rise around 05:00. My staff can confirm we were never disturbed.",
+      "time_window": "August 29, 2025, from 22:00 to 05:00 the next day."
     },
     "ground_truth": {
       "location": "My Lover's Apartment (North Hill Residential Area)",

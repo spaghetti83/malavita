@@ -205,9 +205,10 @@ groups
           <ul className="mb-character-list-container">
           { characterList ? characterList.map( (e,index) => (
             e.role !== "Ally" && (
-            <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span className="material-icons">
+             <li key={index} className="mb-character-list" onClick={()=> loadCharacter(e._id) }>{e.name}: {e.role}<span className="material-icons">
 local_police
 </span></li>
+            
             )
           ))
            : <p>loading characters...</p>
