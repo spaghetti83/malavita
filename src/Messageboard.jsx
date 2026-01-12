@@ -102,7 +102,7 @@ const semanticEngine = async (message) => {
     evalueteNpcAnswer(data.message.content)
     //return  data
   }catch(error){
-    console.log("ERROR found:", error)
+    console.log("ERROR found:",error.name,":", error.message)
     
     semanticEvaluetorErrorHandler(message)
   }

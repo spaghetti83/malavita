@@ -109,8 +109,9 @@ const addPressure = async (req, res, next) => {
         console.log("pressure correctly saved")
         next()
     }catch(error){
-        console.error(error);
-        res.status(500).send('Errore: ' + error.message);
+        console.error(error.message);
+        //res.status(500).send({message: 'Error: ' + error.message});
+        next()
     }
 }
 if(!req.isAlterated){
