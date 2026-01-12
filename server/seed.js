@@ -11,22 +11,22 @@ const DATA_TO_SEED = [
   
   {
     collection: 'characters',
-    filePath: `./data/characters/Chen.json`
+    filePath: `./data/case_101/characters/Chen.json`
   }, {
     collection: 'characters',
-    filePath: `./data/characters/LiJun.json`
+    filePath: `./data/case_101/characters/LiJun.json`
   },
    {
     collection: 'characters',
-    filePath: `./data/characters/LinBo.json`
+    filePath: `./data/case_101/characters/LinBo.json`
   },
    {
     collection: 'characters',
-    filePath: `./data/characters/SilviaMoretti.json`
+    filePath: `./data/team/SilviaMoretti.json`
   },
-   {
+  {
     collection: 'characters',
-    filePath: `./data/characters/WRONG.json`
+    filePath: `./data/team/GennaroGlitchRusso.json`
   },
   {
     collection: 'cases',
@@ -38,7 +38,7 @@ const DATA_TO_SEED = [
   },
   {
     collection: 'evidences',
-    filePath: `./data/evidences/case_101_evidence.json`
+    filePath: `.data/case_101/characters/evidences/case_101_evidence.json`
   }
 
   // Puoi aggiungere altri file qui

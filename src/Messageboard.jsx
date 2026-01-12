@@ -13,6 +13,7 @@ const [chatHistory,setChatHistory] = useState([])
 const [characterLoaded, setCharacterLoaded] = useState(null)
 const [stressLevel,setStressLevel] = useState(0)
 const [semanticEvaluetor,setSemanticEvaluetor] = useState("")
+const [semantiContentInstructions,setSemanticContentInstructions] = useState("")
 const [stressModifier,setStressModifier] = useState([])
 const [pressureLimits,setPressureLimits] = useState([])
 const characterList =  props.characterFilter
@@ -65,6 +66,8 @@ const loadCharacter = async (id)=> {
         setStressLevel(data.character.state_metrics.pressure_level)
         setPressureLimits(data.character.interaction_triggers.semantic_triggers)
         setSemanticEvaluetor(JSON.stringify({triggered_concepts: data.character.interaction_triggers.semantic_triggers, prompt: data.prompt}))
+        setSemanticContentInstructions(JSON.stringify({instructions: data.instructions}))
+        console.log("INSTRUCTIONS",data.instructions)
         console.log("prompt loaded to the NPC...")
         //return data
     }catch(error){
@@ -81,6 +84,7 @@ const semanticEngine = async (message) => {
     headers : {'Content-Type' : 'application/json'},
     body : JSON.stringify({
       semantic_evaluetor : semanticEvaluetor,
+      content_instructions : semantiContentInstructions,
       message : message,
       character : JSON.stringify(characterLoaded),
       chat_history : JSON.stringify(chatHistory)
@@ -165,7 +169,7 @@ useEffect(()=>{
       <div className="mb-chatlog">
         {chatLog}
       </div>
-      <p className="mb-stree-level">Stress level {stressLevel}</p>
+      <div className="mb-stree-level">Stress level {stressLevel}</div>
       <div className="mb-input-btn-container">
       <input id="text" type="text" value={message} placeholder="ask something..." onChange={handleMessage} onKeyDown={handleMessage} autoComplete="off"/>
       <button

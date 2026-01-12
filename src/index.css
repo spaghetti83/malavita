@@ -122,6 +122,10 @@ li:hover{
 .mb-chatlog-container{
   display: block;
   justify-items: center;
+  overflow: auto;
+}
+.mb-chatlog{
+  overflow: auto;
 }
 .mb-header-container {
   display: flex;

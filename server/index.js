@@ -131,12 +131,12 @@ app.post('/semantic-evaluetor',semanticEngine,addPressure, async (req,res) => {
     const message = JSON.stringify(req.body.message)
     const character = JSON.stringify(req.body.character)
     const history = JSON.parse(req.body.chat_history)
-
+    const instructions = JSON.parse(req.body.content_instructions)
     try{
      const response =  await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
-        {role: "system", content: character},
+        {role: "system", content: JSON.stringify({character: character, instructions: instructions})},
         ...history,
        {role: "user", content: message}
     ],
@@ -206,8 +206,11 @@ app.get('/character/:id',async (req,res) =>{
         }
         const promptPath = path.join(__dirname, 'data/logic/', 'semantic_analyzer_prompt.md');
         const promptContent = fs.readFileSync(promptPath, 'utf8');
-        promptContent ? console.log('loaded file') : console.log('not loaded')
-        res.send({character: char,prompt: promptContent})
+        const promptPathInstructions = path.join(__dirname, 'data/logic/', 'semantic_content_instruction.md');
+        const promptContentInstructions = fs.readFileSync(promptPathInstructions, 'utf8');
+        promptContent ? console.log('content loaded file') : console.log('content not loaded')
+        promptContentInstructions ? console.log('instruction loaded file') : console.log('instrucitions not loaded')
+        res.send({character: char,prompt: promptContent, instructions: promptContentInstructions})
     }catch(error){
         console.log(error)
     }

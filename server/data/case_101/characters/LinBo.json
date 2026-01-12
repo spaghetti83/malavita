@@ -28,7 +28,7 @@
     "cover_story": {
       "location": "Lin Market (Back office)",
       "activity": "Inventory check of the latest shipment of imported spices.",
-      "time_window": "August 29, 2025, from 18:00 to 19:15."
+      "time_window": "August 29, 2025, from 20:30 to 21:15."
     },
     "ground_truth": {
       "location": "Lin Market (Back office)",

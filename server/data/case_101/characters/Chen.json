@@ -6,16 +6,8 @@
   "role": "Suspect",
   "case_id": "case_101",
   "avatar_asset": "public/case_101/characters/chen_wei.png",
-  "linguistics": {
-    "primary_language": "it",
-    "known_languages": [
-      "it",
-      "zh"
-    ],
-    "unknown_language_reaction": "Non capisco questo dialetto. Parla chiaro, altrimenti perdiamo tempo entrambi.'"
-  },
   "profile": {
-    "background": "56 years old. Divorced, currently a bachelor living alone. He has resided in Italy for over 20 years but travels back to Shanghai frequently, usually during the Spring Festival. He runs a successful import/export side business alongside the Emporium.",
+    "background": "Chen Wei (56) is a man driven by a desperate obsession. While he has operated his own Emporium in Italy for over two decades, the business is a failing front for a struggling import/export operation. He is drowning in debt to Li Jun, the owner of the Red Dragon Club, whose high-interest loans have pushed Chen to the brink of ruin. Chen is convinced that the only way to settle his debts and regain status is to acquire Lin Bo’s market—a significantly more profitable and strategically located establishment. Despite their long-standing acquaintance, Chen’s repeated and increasingly aggressive offers to buy the market have turned their relationship toxic. Recently, the tension peaked in a heated public argument where Lin Bo flatly refused to sell, humiliating Chen. For Chen, Lin Bo’s refusal is no longer just a business disagreement; it is a direct obstacle to his survival, fueling a dangerous level of resentment and persistence.",
     "personality_traits": [
       "Arrogant",
       "Manipulative",
